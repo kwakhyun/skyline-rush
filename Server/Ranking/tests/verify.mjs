@@ -8,9 +8,14 @@ checks.push("C++ and server replay parity across 3.5 km x 2 seeds plus three-lif
 assert.throws(()=>validateReplay({...fixtures[0],ticks:144001}));
 assert.throws(()=>validateReplay({...fixtures[0],events:[{tick:-1,action:"l"}]}));
 checks.push("Replay limits and invalid input validation");
+const legacy=JSON.parse(fs.readFileSync(new URL('fixtures-v6.json',import.meta.url),'utf8').replace(/^\uFEFF/,''));
+for(const a of legacy)assert.equal(validateReplay(a).score,a.client_score);
+checks.push('Rules 6 compatibility and Rules 7 risk/near-miss score replay');
 const base=process.env.RUNNER_TEST_API||"http://127.0.0.1:8787";
 const call=async(body,token)=>{const r=await fetch(base+"/api/runner",{method:"POST",headers:{"Content-Type":"application/json",...(token?{Authorization:"Bearer "+token}:{})},body:JSON.stringify(body)});return {status:r.status,body:await r.json()};};
-const before=await (await fetch(base+"/api/runner")).json();
+const before=await (await fetch(base+"/api/runner?rules_version=7")).json();
+assert.equal(before.rules_version,7);
+const oldBefore=await (await fetch(base+'/api/runner')).json();assert.equal(oldBefore.rules_version,6);
 assert.ok(Array.isArray(before.entries),JSON.stringify(before));
 assert.equal((await call({action:"register",nickname:"!"})).status,400);
 assert.equal((await call({action:"submit"})).status,401);
@@ -24,9 +29,10 @@ for(let i=0;i<fixtures.length;i++){
  assert.equal((await call({...input,ticks:input.ticks-1},a.body.token)).status,409);
 }
 checks.push("Registration, bearer authentication, tampered score rejection, verified submissions, idempotency");
-const board=await(await fetch(base+"/api/runner?board=qa&player="+profiles[0].id)).json();
+const board=await(await fetch(base+"/api/runner?rules_version=7&board=qa&player="+profiles[0].id)).json();
 assert.ok(board.entries.length>=2);assert.ok(board.my_rank>=1);
 for(let i=1;i<board.entries.length;i++)assert.ok(board.entries[i-1].score>=board.entries[i].score);
-const after=await(await fetch(base+"/api/runner")).json();assert.deepEqual(after.entries,before.entries);
+const after=await(await fetch(base+"/api/runner?rules_version=7")).json();assert.deepEqual(after.entries,before.entries);
+const oldAfter=await(await fetch(base+'/api/runner')).json();assert.deepEqual(oldAfter.entries,oldBefore.entries);
 checks.push("Ranking order, personal rank, public and QA board isolation");
 console.log(JSON.stringify({status:"passed",endpoint:base,checks,qa_entries:board.entries.length},null,2));

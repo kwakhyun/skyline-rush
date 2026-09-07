@@ -5,6 +5,7 @@
 enum class EHOORunnerPhase : uint8 { Ready, Running, Paused, Crashed };
 enum class EHOORunnerHazard : uint8 { None, Barrier, Overhead, Gap };
 enum class EHOORunnerTheme : uint8 { City, Climb, Dive, Underwater, JumpIsles, Loop, Launch, Flight, Clouds };
+enum class EHOORunnerSpecial : uint8 { None, TimberPass, Skyworks, PrismHall, JadeBridge, RiftGarden };
 
 struct FHOORunnerTile
 {
@@ -15,6 +16,10 @@ struct FHOORunnerTile
     bool bFlightGap = false;
     bool bJumpRow = false;
     int32 BoosterLane = 0;
+    EHOORunnerSpecial Special = EHOORunnerSpecial::None;
+    int32 SpecialPhase = -1;
+    int32 RiskLane = 0;
+    EHOORunnerHazard Risk = EHOORunnerHazard::None;
     EHOORunnerHazard Lanes[3] = {};
 };
 
@@ -50,7 +55,21 @@ namespace HOORunner
     FTransform Frame(double DistanceCm);
     FRotator Heading(double DistanceCm);
     const TCHAR* HazardName(EHOORunnerHazard Hazard);
+    EHOORunnerSpecial Special(double DistanceCm);
+    int32 SpecialPhase(double DistanceCm);
+    const TCHAR* SpecialName(EHOORunnerSpecial Section);
 }
+
+// Four recycled rows cover the collision window. No per-run collections grow.
+struct FHOORunnerPassSample
+{
+    int64 Tile = -1;
+    uint8 NearMask = 0;
+    uint8 BlockedMask = 0;
+    bool bRiskEntered = false;
+    bool bNearResolved = false;
+    bool bRiskResolved = false;
+};
 
 /** All gameplay collision takes place in track coordinates; rendering uses the same Tile(). */
 struct FHOORunnerState
@@ -74,6 +93,12 @@ struct FHOORunnerState
     int32 Chain = 0;
     int32 BestChain = 0;
     int32 PickupScore = 0;
+    int32 RiskScore = 0;
+    int32 StyleScore = 0;
+    int32 RiskClears = 0;
+    int32 NearMisses = 0;
+    int64 LastRiskTile = -1;
+    FHOORunnerPassSample PassSamples[4];
     float ChainRemaining = 0;
     double Elapsed = 0;
     int32 SimulationTicks = 0;
@@ -108,5 +133,6 @@ struct FHOORunnerState
     bool IsBoosting() const { return BoostRemaining > 0; }
     void ChargeFever(int32 Amount);
     int32 Multiplier() const { return (1 + FMath::Min(3, Chain / 10)) * (IsFever() ? 2 : 1); }
-    int32 Score() const { return FMath::FloorToInt(Distance / 100.0) + PickupScore; }
+    int32 DistanceScore() const { return FMath::FloorToInt(Distance / 100.0); }
+    int32 Score() const { return DistanceScore() + PickupScore + RiskScore + StyleScore; }
 };

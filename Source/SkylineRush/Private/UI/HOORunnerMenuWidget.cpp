@@ -74,7 +74,7 @@ void UHOORunnerMenuWidget::Present(AHOORunnerPawn* Runner,AHOORunnerHUD* OwnerHU
  Title->SetText(Ready?LOCTEXT("Title","스카이라인\n러시"):Paused?LOCTEXT("PauseTitle","잠깐의 쉼,\n다음 질주를 위해"):LOCTEXT("ResultTitle","멋진 질주였어요!"));
  Description->SetText(Ready?LOCTEXT("Subtitle","바람을 가르는 나만의 질주"):Paused?LOCTEXT("PauseDesc","준비되면 카운트다운 후 이어 달려요."):LOCTEXT("ResultDesc","다음에는 조금 더 멀리, 조금 더 빠르게."));
  Score->SetText(FText::Format(LOCTEXT("Score","{0}점  ·  {1} m"),FText::AsNumber(Ready?Runner->BestScore:R.Score()),FText::AsNumber(FMath::FloorToInt(Ready?Runner->BestDistance:R.Distance/100.))));
- Detail->SetText(Ready?LOCTEXT("ReadyDetail","내 최고기록 · 코너에서는 길을 따라 자동 회전해요."):FText::Format(LOCTEXT("Detail","결정 {0}개  ·  피버 {1}회  ·  비행 {2}회"),FText::AsNumber(R.Coins),FText::AsNumber(R.FeverActivations),FText::AsNumber(R.Launches)));
+ Detail->SetText(Ready?LOCTEXT("ReadyDetail","시즌 3 · 청록색은 안전, 금색은 도전 경로예요."):FText::FromString(FString::Printf(TEXT("거리 %s  +  수집 %s\n위험 보상 %s  +  아슬아슬 %s\n도전 성공 %d회  ·  아슬아슬 %d회"),*FText::AsNumber(R.DistanceScore()).ToString(),*FText::AsNumber(R.PickupScore).ToString(),*FText::AsNumber(R.RiskScore).ToString(),*FText::AsNumber(R.StyleScore).ToString(),R.RiskClears,R.NearMisses)));
  PrimaryLabel->SetText(Ready?LOCTEXT("Start","달리기 시작  /  Enter"):Paused?LOCTEXT("Resume","이어서 달리기  /  Enter"):LOCTEXT("Again","한 번 더 달리기  /  Enter"));
  HomeLabel->SetText(Ready?LOCTEXT("New","새 코스로 출발"):LOCTEXT("Home","처음 화면"));
  PortraitPanel->SetVisibility(Ready?ESlateVisibility::HitTestInvisible:ESlateVisibility::Collapsed);

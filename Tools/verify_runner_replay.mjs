@@ -10,13 +10,13 @@ for(const fixture of fixtures){
   const result=validateReplay(fixture);
   assert.equal(result.score,fixture.client_score);
   assert.ok(Math.abs(result.distance-fixture.distance)<.00001);
-  for(const key of ['shards','fevers','launches',...('lives' in fixture?['lives','hits']:[])])
+  for(const key of ['shards','fevers','launches',...('riskScore' in fixture?['riskScore','styleScore','risks','nearMisses']:[]),...('lives' in fixture?['lives','hits']:[])])
     assert.equal(result[key],fixture[key]);
   results.push({seed:fixture.seed,ticks:fixture.ticks,score:result.score,distance:result.distance,passed:true});
 }
 assert.throws(()=>validateReplay({...fixtures[0],ticks:144001}));
 assert.throws(()=>validateReplay({...fixtures[0],events:[{tick:-1,action:'l'}]}));
-const report={status:'passed',http_requests:0,rules_version:6,results};
+const report={status:'passed',http_requests:0,rules_version:7,results};
 const out=new URL('../Saved/QA/Replay/parity.json',import.meta.url);
 fs.writeFileSync(out,JSON.stringify(report,null,2));
 console.log(JSON.stringify(report,null,2));

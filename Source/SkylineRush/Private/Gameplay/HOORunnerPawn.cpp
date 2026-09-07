@@ -25,8 +25,9 @@
 namespace
 {
     enum EPool { Deck, Inset, Edge, Rail, Support, Barrier, BarrierStripe, Beam, BeamPost,
-        GapWarning, Orb, Sidewalk, Arch, ArchGlow, BoosterFrame, BoosterBolt, LaunchTile, CornerBoard, CornerArrow, CityFloor, InteriorFloor, JungleFloor, DimensionFloor, PoolCount };
-    const TCHAR* RecordSlot() { return FParse::Param(FCommandLine::Get(),TEXT("RunnerQA")) ? TEXT("SkylineRush_QA_Record_v5") : TEXT("SkylineRush_Record_v5"); }
+        GapWarning, Orb, Sidewalk, Arch, ArchGlow, BoosterFrame, BoosterBolt, LaunchTile, CornerBoard, CornerArrow, CityFloor, InteriorFloor, JungleFloor, DimensionFloor,
+        RiskOrb, SafeGuide, RiskGuide, SpecialHazard, PoolCount=SpecialHazard+5 };
+    const TCHAR* RecordSlot() { return FParse::Param(FCommandLine::Get(),TEXT("RunnerQA")) ? TEXT("SkylineRush_QA_Record_v6") : TEXT("SkylineRush_Record_v6"); }
     const TCHAR* PreferencesSlot() { return FParse::Param(FCommandLine::Get(),TEXT("RunnerQA")) ? TEXT("SkylineRush_QA_Preferences_v1") : TEXT("SkylineRush_Preferences_v1"); }
     UStaticMesh* Mesh(const TCHAR* Path) { return LoadObject<UStaticMesh>(nullptr, Path); }
 }
@@ -117,6 +118,12 @@ AHOORunnerPawn::AHOORunnerPawn()
     AddPool(TEXT("InteriorFloor"),Cube,LoadObject<UMaterialInterface>(nullptr,TEXT("/Game/SkylineRush/Environment/Materials/M_AtriumFloor")),3);
     AddPool(TEXT("JungleFloor"),Cube,LoadObject<UMaterialInterface>(nullptr,TEXT("/Game/SkylineRush/Environment/Materials/M_MossStone")),3);
     AddPool(TEXT("DimensionFloor"),Cube,LoadObject<UMaterialInterface>(nullptr,TEXT("/Game/SkylineRush/Environment/Materials/M_VoidFloor")),3);
+    AddPool(TEXT("RiskCrystal"),Mesh(TEXT("/Game/SkylineRush/Environment/Meshes/SM_AeroCrystal")),LoadObject<UMaterialInterface>(nullptr,TEXT("/Game/SkylineRush/Environment/Materials/MI_Gold")),3);
+    AddPool(TEXT("SafeRouteGuide"),Cube,LoadObject<UMaterialInterface>(nullptr,TEXT("/Game/SkylineRush/Environment/Materials/MI_Cyan")),2);
+    AddPool(TEXT("RiskRouteGuide"),Cube,LoadObject<UMaterialInterface>(nullptr,TEXT("/Game/SkylineRush/Environment/Materials/MI_Gold")),4);
+    const TCHAR* SpecialMats[]={TEXT("Timber"),TEXT("Skyworks"),TEXT("Prism"),TEXT("Jade"),TEXT("Rift")};
+    for(const auto* M:SpecialMats)
+        AddPool(*(FString(TEXT("SpecialHazard"))+M),Cube,LoadObject<UMaterialInterface>(nullptr,*(FString(TEXT("/Game/SkylineRush/Environment/SpecialSections/M_SP_"))+M)),6);
 
 }
 
@@ -141,22 +148,12 @@ void AHOORunnerPawn::BeginPlay()
     Super::BeginPlay();
     if (auto* Saved=Cast<UHOORunnerRecord>(UGameplayStatics::LoadGameFromSlot(RecordSlot(),0)))
     {
-        if(Saved->Version==5 && FMath::IsFinite(Saved->Distance)) BestDistance=FMath::Max(0.0f,Saved->Distance);
+        if(Saved->Version==6 && FMath::IsFinite(Saved->Distance)) BestDistance=FMath::Max(0.0f,Saved->Distance);
         BestScore=FMath::Max(0,Saved->Score);
         LocalScores=Saved->Runs;
         if(LocalScores.Num()>10) LocalScores.SetNum(10);
     }
-    else
-    {
-        const TCHAR* LegacySlot=FParse::Param(FCommandLine::Get(),TEXT("RunnerQA"))?TEXT("SkylineRush_QA_Record_v4"):TEXT("SkylineRush_Record_v4");
-        auto* Legacy=Cast<UHOORunnerRecord>(UGameplayStatics::LoadGameFromSlot(LegacySlot,0));
-        if(!Legacy) Legacy=Cast<UHOORunnerRecord>(UGameplayStatics::LoadGameFromSlot(FParse::Param(FCommandLine::Get(),TEXT("RunnerQA"))?TEXT("SkylineRush_QA_Record_v3"):TEXT("SkylineRush_Record_v3"),0));
-        if(Legacy)
-        {
-            if(FMath::IsFinite(Legacy->Distance)) BestDistance=FMath::Max(0.f,Legacy->Distance);
-            BestScore=FMath::Max(0,Legacy->Score);
-        }
-    }
+    // Rules 7 starts a separate score season. Previous save files remain intact.
     ReloadPreferences();
     Run.Reset(409);
     StartingBest=BestDistance;
@@ -292,6 +289,7 @@ void AHOORunnerPawn::SaveRecord()
         Entry.RunId=RunId;Entry.Nickname=PlayerNickname;Entry.Date=FDateTime::UtcNow().ToIso8601();
         Entry.Score=Run.Score();Entry.Distance=Run.Distance/100.;Entry.Seconds=Run.Elapsed;
         Entry.Seed=Run.Seed;Entry.Ticks=Run.SimulationTicks;
+        Entry.DistancePoints=Run.DistanceScore();Entry.PickupPoints=Run.PickupScore;Entry.RiskPoints=Run.RiskScore;Entry.StylePoints=Run.StyleScore;
         if(!bReplayOverflow) Entry.ReplayJson=TEXT("[")+FString::Join(ReplayInputs,TEXT(","))+TEXT("]");
         LocalScores.Add(Entry);
         LocalScores.Sort([](const auto& A,const auto& B) { if(A.Score!=B.Score) return A.Score>B.Score;if(A.Distance!=B.Distance) return A.Distance>B.Distance;return A.Date<B.Date; });
@@ -311,6 +309,15 @@ void AHOORunnerPawn::UpdateCourse(bool bReset)
         const int64 Index=Start+I;
         const int32 Slot=static_cast<int32>(Index%HOORunner::VisibleTiles);
         if(bReset || Slots[Slot]!=Index) { Slots[Slot]=Index;PlaceTile(Slot,Index); }
+    }
+    if(bReset)LastRiskVisual=-1;
+    if(Run.LastRiskTile>=0 && Run.LastRiskTile!=LastRiskVisual)
+    {
+        LastRiskVisual=Run.LastRiskTile;
+        const int Slot=static_cast<int>(Run.LastRiskTile%HOORunner::VisibleTiles);
+        if(Slots[Slot]==Run.LastRiskTile)
+            for(int I=0;I<3;++I) Pools[RiskOrb]->UpdateInstanceTransform(Slot*3+I,FTransform(FQuat::Identity,FVector::ZeroVector,FVector::ZeroVector),true,false,true);
+        Pools[RiskOrb]->MarkRenderInstancesDirty();
     }
     if(Run.LastBoosterTile!=LastBoosterVisual)
     {
@@ -362,9 +369,15 @@ void AHOORunnerPawn::PlaceTile(int32 Slot,int64 Index)
         Set(Deck,L,FVector(0,Lane*300,-34),FVector(Length,300,68),Solid);
         const int Floors[]={Inset,CityFloor,InteriorFloor,JungleFloor,DimensionFloor};
         for(int B=0;B<5;++B)Set(Floors[B],L,FVector(0,Lane*300,.5),FVector(Length-2,298,1),Solid && B==static_cast<int>(Biome));
-        Set(Barrier,L,FVector(0,Lane*300,57.5),FVector(150,240,115),Hazard==EHOORunnerHazard::Barrier);
+        Set(Barrier,L,FVector(0,Lane*300,57.5),FVector(150,240,115),Hazard==EHOORunnerHazard::Barrier && T.Special==EHOORunnerSpecial::None);
         Set(BarrierStripe,L,FVector(-77,Lane*300,67),FVector(4,216,22),Hazard==EHOORunnerHazard::Barrier);
-        Set(Beam,L,FVector(0,Lane*300,192.5),FVector(150,282,125),Hazard==EHOORunnerHazard::Overhead);
+        Set(Beam,L,FVector(0,Lane*300,192.5),FVector(150,282,125),Hazard==EHOORunnerHazard::Overhead && T.Special==EHOORunnerSpecial::None);
+        for(int B=0;B<5;++B)
+        {
+            const bool Active=static_cast<int>(T.Special)==B+1;
+            Set(SpecialHazard+B,L,FVector(0,Lane*300,57.5),FVector(150,240,115),Active && Hazard==EHOORunnerHazard::Barrier);
+            Set(SpecialHazard+B,L+3,FVector(0,Lane*300,192.5),FVector(150,282,125),Active && Hazard==EHOORunnerHazard::Overhead);
+        }
         for(int32 Side=0;Side<2;++Side)
         {
             Set(BeamPost,L*2+Side,FVector(0,Lane*300+(Side?135:-135),83),FVector(100,12,166),Hazard==EHOORunnerHazard::Overhead);
@@ -387,6 +400,15 @@ void AHOORunnerPawn::PlaceTile(int32 Slot,int64 Index)
     Set(ArchGlow,0,FVector(-37,0,580),FVector(8,930,12),Gate);
     Set(Orb,0,FVector(0,T.SafeLane*300,95),FVector(55,55,90),
         Index%2==1 && Index>Run.LastCollectedTile,FRotator(0,18,0));
+    const bool Special=T.Special!=EHOORunnerSpecial::None;
+    const bool Reward=T.Risk!=EHOORunnerHazard::None && Index>Run.LastRiskTile && Index>Run.ProtectedThroughTile;
+    for(int I=0;I<3;++I)
+        Set(RiskOrb,I,{T.Risk==EHOORunnerHazard::Gap?335.:172.,T.RiskLane*300.+(I-1)*44,115.+(I==1?45:0)},FVector(36,36,60),Reward,FRotator(0,18,0));
+    for(int I=0;I<2;++I)
+        Set(SafeGuide,I,{-100.,I?70.:-70.,4},{120,12,5},Special,FRotator(0,I?-35:35,0));
+    const bool Approach=Special && T.SpecialPhase>=2 && T.SpecialPhase<=18;
+    for(int I=0;I<4;++I)
+        Set(RiskGuide,I,{-130.+I/2*160,T.RiskLane*300.+(I%2?60:-60),5},{85,14,6},Approach && T.Risk!=EHOORunnerHazard::Gap,FRotator(0,I%2?-35:35,0));
     const bool BoosterVisible=T.bBooster && Index>Run.LastBoosterTile;
     for(int32 I=0;I<8;++I)
     {

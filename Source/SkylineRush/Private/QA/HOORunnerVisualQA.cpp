@@ -110,6 +110,64 @@ void AHOORunnerVisualQA::Tick(float Dt)
  const double Now=FPlatformTime::Seconds(),Wall=(Now-PreviousTime)*1000;PreviousTime=Now;++StageFrames;
  if(Now-StartTime>(bVideo?600.:240.)){UE_LOG(LogTemp,Error,TEXT("VISUAL_QA_TIMEOUT"));UGameplayStatics::GetPlayerController(this,0)->ConsoleCommand(TEXT("quit"),false);return;}
  auto& R=Runner->Run;auto* PC=UGameplayStatics::GetPlayerController(this,0);
+ if(FParse::Param(FCommandLine::Get(),TEXT("RunnerQASpecials")))
+ {
+  if(Now-StartTime<8) return;
+  constexpr double Starts[]={36000,86400,136800,172800,271200};
+  if(Stage<5)
+  {
+   if(StageFrames>90)
+   {
+    R.Reset(409);R.Start();R.Distance=Starts[Stage]+1200;Runner->Countdown=0;
+    Runner->bVisualQAFrozen=true;Runner->UpdateCourse(true);Runner->UpdatePresentation(0);
+    Next(Stage+10);
+   }
+  }
+  else if(Stage>=10 && Stage<15 && StageFrames>100)
+  {
+   const TCHAR* Names[]={TEXT("special-forest"),TEXT("special-city"),TEXT("special-atrium"),TEXT("special-jungle"),TEXT("special-dimension")};
+   Shot(Names[Stage-10]);Next(Stage+10);
+  }
+  else if(Stage>=20 && Stage<25 && StageFrames>10)
+  {
+   const int N=Stage-20;
+   if(N==4) Next(25);
+   else Next(N+1);
+  }
+  else if(Stage==25)
+  {
+   FString Json;TArray<TSharedPtr<FJsonValue>> Fixtures;
+   if(!FFileHelper::LoadFileToString(Json,*(FPaths::ProjectSavedDir()/TEXT("QA/Replay/ReplayFixtures.json"))) || !FJsonSerializer::Deserialize(TJsonReaderFactory<>::Create(Json),Fixtures))
+   {UE_LOG(LogTemp,Error,TEXT("SPECIAL_QA_REPLAY_MISSING"));PC->ConsoleCommand(TEXT("quit"),false);return;}
+   for(const auto& F:Fixtures)if(F->AsObject()->GetIntegerField(TEXT("seed"))==411)
+   {
+    const auto J=F->AsObject();SpecialReplayEnd=J->GetIntegerField(TEXT("ticks"));SpecialReplayScore=J->GetIntegerField(TEXT("client_score"));
+    for(const auto& V:J->GetArrayField(TEXT("events"))){SpecialReplayTicks.Add(V->AsObject()->GetIntegerField(TEXT("tick")));SpecialReplayActions.Add(V->AsObject()->GetStringField(TEXT("action")));}
+    break;
+   }
+   if(SpecialReplayEnd==0){UE_LOG(LogTemp,Error,TEXT("SPECIAL_QA_REPLAY_EMPTY"));PC->ConsoleCommand(TEXT("quit"),false);return;}
+   Runner->RunId=FGuid::NewGuid().ToString();R.Reset(411);R.Start();Runner->Countdown=0;Runner->bVisualQAFrozen=false;Runner->UpdateCourse(true);Next(26);
+  }
+  else if(Stage==26)
+  {
+   while(SpecialReplayCursor<SpecialReplayTicks.Num() && SpecialReplayTicks[SpecialReplayCursor]<=R.SimulationTicks)
+   {
+    const auto& A=SpecialReplayActions[SpecialReplayCursor++];
+    if(A==TEXT("l"))Runner->MoveLeft();else if(A==TEXT("r"))Runner->MoveRight();else if(A==TEXT("j"))Runner->JumpAction();else Runner->SlideAction();
+   }
+   if(R.RiskClears>0 && !ShotStages.Contains(101)){ShotStages.Add(101);Shot(TEXT("special-risk-reward"));}
+   if(R.SimulationTicks>=SpecialReplayEnd || R.Phase==EHOORunnerPhase::Crashed)
+   {
+    const bool Passed=R.SimulationTicks==SpecialReplayEnd && R.Score()==SpecialReplayScore && R.RiskClears>0 && R.NearMisses>0;
+    UE_LOG(LogTemp,Display,TEXT("SPECIAL_REPLAY_QA passed=%d score=%d risks=%d near=%d ticks=%d"),Passed,R.Score(),R.RiskClears,R.NearMisses,R.SimulationTicks);
+    if(!Passed)UE_LOG(LogTemp,Error,TEXT("SPECIAL_REPLAY_QA_FAILED"));
+    Runner->bVisualQAFrozen=true;R.Phase=EHOORunnerPhase::Crashed;Runner->SaveRecord();Next(27);
+   }
+  }
+  else if(Stage==27 && StageFrames>70){Shot(TEXT("special-results"));Next(28);}
+  else if(Stage==28 && StageFrames>10){Report();PC->ConsoleCommand(TEXT("quit"),false);}
+  return;
+ }
  if(Stage==0 && Now-StartTime>6)
  {
   Shot(TEXT("main"));Next(1);

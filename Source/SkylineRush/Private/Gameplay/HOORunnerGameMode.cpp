@@ -338,7 +338,7 @@ void AHOORunnerHUD::DrawHUD()
         Button(ERunnerMenuAction::Nickname,P->GetNickname()+TEXT("  /  이름 바꾸기"),X+690,Y+36,326,56);
         Button(ERunnerMenuAction::Local,TEXT("내 최고기록"),X+34,Y+123,220,53,!bOnlineTab);
         Button(ERunnerMenuAction::Online,TEXT("온라인 랭킹"),X+269,Y+123,220,53,bOnlineTab);
-        Text(bOnlineTab?TEXT("시즌 2 · 플레이어별 최고 점수"):TEXT("이 PC에서 달린 상위 10개 기록"),X+526,Y+141,18,Muted);
+        Text(bOnlineTab?TEXT("시즌 3 · 플레이어별 최고 점수"):TEXT("이 PC에서 달린 상위 10개 기록"),X+526,Y+141,18,Muted);
         Round(X+34,Y+196,982,37,Pale,10);
         Text(TEXT("순위"),X+55,Y+203,16,Muted);Text(TEXT("러너"),X+155,Y+203,16,Muted);
         Text(TEXT("점수"),X+643,Y+203,16,Muted);Text(TEXT("거리"),X+857,Y+203,16,Muted);
@@ -388,7 +388,7 @@ void AHOORunnerHUD::DrawHUD()
     if(!Menu)
     {
         const int64 Start=FMath::Max<int64>(0,FMath::FloorToInt64(R.Distance/600)-1);
-        if(!R.IsFlying())
+        if(!R.IsFlying() && HOORunner::Special(R.Distance)==EHOORunnerSpecial::None)
             for(int64 I=Start;I<Start+35;++I)
             {
                 const auto Tile=HOORunner::Tile(I,R.Seed);

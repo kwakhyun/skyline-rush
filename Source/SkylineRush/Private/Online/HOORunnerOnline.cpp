@@ -61,7 +61,7 @@ void AHOORunnerPawn::RefreshOnlineRanking()
     if(bOnlineBusy) return;
     bOnlineBusy=true;RankStatus=TEXT("순위를 불러오는 중이에요...");
     const FString Board=FParse::Param(FCommandLine::Get(),TEXT("RunnerQA"))?TEXT("qa"):TEXT("main");
-    auto Request=FHttpModule::Get().CreateRequest();Request->SetURL(RankingApi()+TEXT("/api/runner?board=")+Board+TEXT("&player=")+OnlinePlayerId);
+    auto Request=FHttpModule::Get().CreateRequest();Request->SetURL(RankingApi()+TEXT("/api/runner?rules_version=7&board=")+Board+TEXT("&player=")+OnlinePlayerId);
     Request->SetVerb(TEXT("GET"));Request->SetTimeout(12);
     TWeakObjectPtr<AHOORunnerPawn> Weak(this);
     Request->OnProcessRequestComplete().BindLambda([Weak](FHttpRequestPtr,FHttpResponsePtr Response,bool Ok)
@@ -109,7 +109,7 @@ void AHOORunnerPawn::SubmitBestRun()
         auto Body=MakeShared<FJsonObject>();Body->SetStringField(TEXT("action"),TEXT("submit"));
         Body->SetStringField(TEXT("run_id"),Entry.RunId);Body->SetStringField(TEXT("nickname"),Weak->PlayerNickname);
         Body->SetNumberField(TEXT("seed"),Entry.Seed);Body->SetNumberField(TEXT("ticks"),Entry.Ticks);
-        Body->SetNumberField(TEXT("client_score"),Entry.Score);Body->SetNumberField(TEXT("rules_version"),6);
+        Body->SetNumberField(TEXT("client_score"),Entry.Score);Body->SetNumberField(TEXT("rules_version"),7);
         Body->SetStringField(TEXT("board"),FParse::Param(FCommandLine::Get(),TEXT("RunnerQA"))?TEXT("qa"):TEXT("main"));
         Body->SetArrayField(TEXT("events"),Events);
         auto Request=FHttpModule::Get().CreateRequest();Request->SetURL(Weak->RankingApi()+TEXT("/api/runner"));

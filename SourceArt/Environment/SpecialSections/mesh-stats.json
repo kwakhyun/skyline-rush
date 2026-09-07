@@ -1,0 +1,27 @@
+[
+  {
+    "mesh": "SM_SP_TimberGate",
+    "vertices": 3528,
+    "faces": 3200
+  },
+  {
+    "mesh": "SM_SP_SkyworksGate",
+    "vertices": 528,
+    "faces": 116
+  },
+  {
+    "mesh": "SM_SP_PrismGate",
+    "vertices": 648,
+    "faces": 138
+  },
+  {
+    "mesh": "SM_SP_JadeGate",
+    "vertices": 648,
+    "faces": 162
+  },
+  {
+    "mesh": "SM_SP_RiftGate",
+    "vertices": 1008,
+    "faces": 212
+  }
+]

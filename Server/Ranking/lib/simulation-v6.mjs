@@ -1,12 +1,8 @@
-import {validateReplay as validateV6} from './simulation-v6.mjs';
 const f=Math.fround,DT=f(1/120),clamp=(x,a,b)=>Math.min(b,Math.max(a,x));
 const mix=x=>{x=(x^(x>>>16))>>>0;x=Math.imul(x,0x7feb352d)>>>0;x^=x>>>15;x=Math.imul(x,0x846ca68b)>>>0;return (x^(x>>>16))>>>0;};
 export function theme(s){const u=Math.max(0,s)%300000;return u<60000?0:u<96000?1:u<126000?2:u<166000?3:u<206000?4:u<236000?5:u<240000?6:u<260000?7:8;}
-export function special(s){if(s<0)return {kind:0,phase:-1};const local=Math.floor(s/600)%500;for(const [n,start] of [60,144,228,288,452].entries())if(local>=start&&local<start+24)return {kind:n+1,phase:local-start};return {kind:0,phase:-1};}
 export function tile(i,seed){
  const lanes=[0,0,0],t={index:i,safe:0,lanes,booster:false,pad:false,flightGap:false,jumpRow:false},local=((i+.5)*600)%300000,th=theme((i+.5)*600);
- const sp=special((i+.5)*600);Object.assign(t,{special:sp.kind,specialPhase:sp.phase,risk:0,riskLane:0});
- if(sp.kind){t.riskLane=(mix((seed^Math.floor(i/500)^sp.kind)>>>0)&1)?1:-1;if([6,12,18].includes(sp.phase)){t.risk=sp.phase/6;lanes[t.riskLane+1]=t.risk;}t.booster=i>=52&&(i-52)%60===0&&!t.risk;return t;}
  if(th===5||th===6||th===7){t.pad=local>=236400&&local<240000;t.flightGap=th===7;if(t.flightGap)lanes.fill(3);return t;}
  if(th===4&&local>=179000&&i%24===12){t.jumpRow=true;lanes.fill(3);return t;}
  if(i<24)return t;t.booster=i>=52&&(i-52)%60===0;
@@ -24,8 +20,6 @@ const interp=(cur,target,dt,speed)=>{const delta=f(target-cur),step=f(dt*speed);
 export function simulate(seed,ticks,events){
  const r={distance:0,lives:3,hits:0,recovery:0,hitSlow:0,speed:1400,lateral:0,lane:0,height:0,vertical:0,slide:0,jump:0,slideOnLand:false,coins:0,chain:0,bestChain:0,points:0,chainTime:0,feverCharge:0,fever:0,boost:0,power:0,fevers:0,boosters:0,lastBooster:-1,lastOrb:-1,protected:-1,launches:0,lastLaunch:-1,flightStart:-1,flightEnd:-1,crashed:false,failure:0,ticks:0};
  const flying=()=>r.flightStart>=0&&r.distance<r.flightEnd,sliding=()=>r.slide>0&&r.height<1;
- Object.assign(r,{riskScore:0,styleScore:0,risks:0,nearMisses:0});
- const passes=Array(4).fill(null);
  const multiplier=()=> (1+Math.min(3,Math.floor(r.chain/10)))*(r.fever>0?2:1);
  const charge=n=>{if(r.fever>0)return;r.feverCharge=Math.min(24,r.feverCharge+n);if(r.feverCharge>=24){r.feverCharge=0;r.fever=8;r.fevers++;}};
  let at=0,cache=new Map();
@@ -57,31 +51,13 @@ export function simulate(seed,ticks,events){
   const current=Math.floor(r.distance/600);
   for(let i=Math.max(0,current-1);i<=current+1;i++){
    const t=getTile(i),along=Math.abs(r.distance-(i+.5)*600),cycle=Math.floor(r.distance/300000);
-   const signed=r.distance-(i+.5)*600;
-   if(passes[i%4]?.tile!==i)passes[i%4]={tile:i,near:0,blocked:0,riskEntered:false,nearResolved:false,riskResolved:false};
-   const pass=passes[i%4];
    if(t.pad&&along<275&&cycle>r.lastLaunch&&r.height<280){r.lastLaunch=cycle;r.launches++;r.flightStart=r.distance;r.flightEnd=cycle*300000+260100;r.lane=0;r.slide=0;r.vertical=0;r.jump=0;r.slideOnLand=false;}
    for(let lane=-1;lane<=1;lane++){
-    const h=t.lanes[lane+1];if(!h)continue;
-    const width=h===3?118:142,depth=h===3?275:112,side=Math.abs(f(r.lateral-lane*300)),bit=1<<(lane+1);
-    if(along<=depth){
-     if(r.fever>0||r.recovery>0||flying()||i<=r.protected)pass.blocked|=bit;
-     const closeSide=side>width&&side<=width+48,closeAction=side<=width&&((h===1&&r.height>=130&&r.height<=180)||(h===2&&sliding()&&r.slide<=f(.2))||(h===3&&r.height>=24&&r.height<=75));
-     if(closeSide||closeAction)pass.near|=bit;
-     if(t.risk&&lane===t.riskLane&&side<105)pass.riskEntered=true;
-    }
-    if(signed>depth&&!pass.nearResolved&&(pass.near&bit)&&!(pass.blocked&bit)&&r.fever<=0&&r.recovery<=0&&!flying()&&i>r.protected){pass.nearResolved=true;r.nearMisses++;r.styleScore+=40*multiplier();}
-    if(side>width||along>depth)continue;
+    const h=t.lanes[lane+1];if(!h||Math.abs(f(r.lateral-lane*300))>(h===3?118:142)||along>(h===3?275:112))continue;
     const hit=(h===1&&r.height<130)||(h===2&&!sliding())||(h===3&&r.height<24);
-    if(hit&&!flying())pass.blocked|=bit;
     if(hit&&!flying()){if(r.fever>0||r.recovery>0)r.protected=Math.max(r.protected,i);if(i>r.protected){r.hits++;r.lives--;if(r.lives<=0){r.lives=0;r.crashed=true;r.failure=h;break;}r.recovery=f(2.5);r.hitSlow=f(1.2);r.protected=i;r.chain=0;r.chainTime=0;r.feverCharge=0;r.boost=0;r.power=0;if(h===3){r.height=80;r.vertical=450;r.lane=0;}}}
    }
    if(r.crashed)break;
-   const rewardDepth=t.risk===3?275:112;
-   if(t.risk&&!pass.riskResolved&&signed>rewardDepth+30){
-    if(signed>rewardDepth+145)pass.riskResolved=true;
-    else if(pass.riskEntered&&!(pass.blocked&(1<<(t.riskLane+1)))&&Math.abs(f(r.lateral-t.riskLane*300))<105&&r.fever<=0&&r.recovery<=0&&!flying()&&i>r.protected){pass.riskResolved=true;r.risks++;r.coins++;r.chain++;r.bestChain=Math.max(r.bestChain,r.chain);r.chainTime=f(2.5);r.points+=20*multiplier();r.riskScore+=80*multiplier();charge(3);}
-   }
    if(t.booster&&i>r.lastBooster&&along<140&&Math.abs(r.lateral)<110&&r.height<160){r.lastBooster=i;r.boosters++;r.boost=4;r.chainTime=f(2.5);charge(6);}
    if(i%2===1&&i>r.lastOrb&&along<120&&(r.fever>0||(Math.abs(f(r.lateral-t.safe*300))<105&&r.height<140))){
     r.coins++;r.lastOrb=i;r.chain++;r.bestChain=Math.max(r.bestChain,r.chain);r.chainTime=f(2.5);charge(1);r.points+=20*multiplier();
@@ -90,11 +66,10 @@ export function simulate(seed,ticks,events){
   if(cache.size>32)for(const key of cache.keys())if(key<current-2)cache.delete(key);
  }
  if(at!==events.length)throw new Error("unused_inputs");
- return {lives:r.lives,hits:r.hits,score:Math.floor(r.distance/100)+r.points+r.riskScore+r.styleScore,distanceScore:Math.floor(r.distance/100),pickupScore:r.points,riskScore:r.riskScore,styleScore:r.styleScore,risks:r.risks,nearMisses:r.nearMisses,distance:r.distance/100,seconds:ticks*DT,shards:r.coins,fevers:r.fevers,boosters:r.boosters,launches:r.launches,crashed:r.crashed,failure:r.failure,ticks:r.ticks};
+ return {lives:r.lives,hits:r.hits,score:Math.floor(r.distance/100)+r.points,distance:r.distance/100,seconds:ticks*DT,shards:r.coins,fevers:r.fevers,boosters:r.boosters,launches:r.launches,crashed:r.crashed,failure:r.failure,ticks:r.ticks};
 }
 export function validateReplay(body){
- if(body.rules_version===6)return validateV6(body);
- if(body.rules_version!==7||!Number.isInteger(body.seed)||body.seed<1||body.seed>1e6||!Number.isInteger(body.ticks)||body.ticks<1||body.ticks>144000||!Array.isArray(body.events)||body.events.length>10000)throw new Error("invalid_replay");
+ if(body.rules_version!==6||!Number.isInteger(body.seed)||body.seed<1||body.seed>1e6||!Number.isInteger(body.ticks)||body.ticks<1||body.ticks>144000||!Array.isArray(body.events)||body.events.length>10000)throw new Error("invalid_replay");
  let previous=-1;
  for(const e of body.events){if(!e||!Number.isInteger(e.tick)||e.tick<previous||e.tick<0||e.tick>=body.ticks||!["l","r","j","s"].includes(e.action))throw new Error("invalid_input");previous=e.tick;}
  return simulate(body.seed,body.ticks,body.events);

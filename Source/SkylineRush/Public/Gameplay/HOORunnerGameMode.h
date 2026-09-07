@@ -15,6 +15,10 @@ struct FHOORunnerScoreEntry
     UPROPERTY(SaveGame,BlueprintReadOnly) FString Nickname;
     UPROPERTY(SaveGame,BlueprintReadOnly) FString Date;
     UPROPERTY(SaveGame,BlueprintReadOnly) int32 Score=0;
+    UPROPERTY(SaveGame) int32 DistancePoints=0;
+    UPROPERTY(SaveGame) int32 PickupPoints=0;
+    UPROPERTY(SaveGame) int32 RiskPoints=0;
+    UPROPERTY(SaveGame) int32 StylePoints=0;
     UPROPERTY(SaveGame,BlueprintReadOnly) float Distance=0;
     UPROPERTY(SaveGame,BlueprintReadOnly) float Seconds=0;
     UPROPERTY(SaveGame,BlueprintReadOnly) int32 Seed=409;
@@ -52,7 +56,7 @@ class SKYLINERUSH_API UHOORunnerRecord : public USaveGame
 {
     GENERATED_BODY()
 public:
-    UPROPERTY(SaveGame,BlueprintReadOnly,Category="Runner") int32 Version = 5;
+    UPROPERTY(SaveGame,BlueprintReadOnly,Category="Runner") int32 Version = 6;
     UPROPERTY(SaveGame,BlueprintReadOnly,Category="Runner") TArray<FHOORunnerScoreEntry> Runs;
     UPROPERTY(SaveGame,BlueprintReadOnly,Category="Runner") float Distance = 0;
     UPROPERTY(SaveGame,BlueprintReadOnly,Category="Runner") int32 Score = 0;

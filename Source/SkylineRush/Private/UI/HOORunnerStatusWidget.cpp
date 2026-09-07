@@ -47,6 +47,9 @@ void UHOORunnerStatusWidget::NativeOnInitialized()
  auto* Speed=Panel({1,0},{1,0},{-26,24},{182,92});Text(Speed,TEXT("속도  /  km/h"),12,Pale);SpeedText=Text(Speed,TEXT("50"),38,Cyan);
  auto* Power=Panel({0,1},{0,1},{26,-27},{260,122});PowerText=Text(Power,TEXT("FEVER  ·  크리스털을 모아요"),15,FLinearColor(1,.35f,.67f));FeverBar=Bar(Power,FLinearColor(1,.18f,.54f));ComboText=Text(Power,TEXT("콤보 0  ·  점수 1배"),14,White);
  auto* Toast=Panel({.5,0},{.5,0},{0,165},{540,70},&ToastPanel);ToastText=Text(Toast,TEXT(""),21,White);ToastText->SetJustification(ETextJustify::Center);ToastPanel->SetRenderOpacity(0);ToastPanel->SetVisibility(ESlateVisibility::Collapsed);
+ auto* Special=Panel({1,1},{1,1},{-26,-27},{430,108},&SectionPanel);
+ SectionText=Text(Special,TEXT(""),20,HOOAero::Gold);SectionHint=Text(Special,TEXT(""),14,White);
+ SectionPanel->SetVisibility(ESlateVisibility::Collapsed);
  SetVisibility(ESlateVisibility::HitTestInvisible);
 }
 void UHOORunnerStatusWidget::NativeTick(const FGeometry& Geometry,float Dt)
@@ -56,6 +59,7 @@ void UHOORunnerStatusWidget::NativeTick(const FGeometry& Geometry,float Dt)
  auto* P=Cast<AHOORunnerPawn>(GetOwningPlayerPawn());if(!P)return;const auto& R=P->GetRun();
  if(PreviousRunId!=P->GetRunId())
  {
+  PreviousNear=R.NearMisses;PreviousRisk=R.RiskClears;
   PreviousRunId=P->GetRunId();Refresh=0;ToastTime=0;ScorePulse=0;PreviousScore=-1;
   PreviousHits=R.Hits;PreviousFever=R.FeverActivations;PreviousBoost=R.BoostersCollected;PreviousTheme=static_cast<int32>(HOORunnerWorld::Biome(R.Distance));
   ToastText->SetText(FText::GetEmpty());ToastPanel->SetRenderOpacity(0);ScoreText->SetRenderScale(FVector2D(1));
@@ -77,11 +81,26 @@ void UHOORunnerStatusWidget::NativeTick(const FGeometry& Geometry,float Dt)
  Change(PowerText,R.IsFever()?FString::Printf(TEXT("FEVER  ·  보호 %.1f초"),R.FeverRemaining):FString::Printf(TEXT("FEVER  ·  %d / 24"),R.FeverCharge));
  ComboText->SetColorAndOpacity(FSlateColor(R.IsBoosting()?HOOAero::Cyan:HOOAero::Text));
  Change(ComboText,R.IsBoosting()?FString::Printf(TEXT("BOOST  %.1f초  ·  콤보 %d"),R.BoostRemaining,R.Chain):FString::Printf(TEXT("콤보 %d  ·  점수 %d배"),R.Chain,R.Multiplier()));
+ const auto Section=HOORunner::Special(R.Distance);
+ const auto Preview=Section;
+ SectionPanel->SetVisibility(Preview==EHOORunnerSpecial::None?ESlateVisibility::Collapsed:ESlateVisibility::HitTestInvisible);
+ if(Preview!=EHOORunnerSpecial::None)
+ {
+  Change(SectionText,FString::Printf(TEXT("%s%s"),Section==EHOORunnerSpecial::None?TEXT("곧 진입 · "):TEXT(""),HOORunner::SpecialName(Preview)));
+  FString Hint=TEXT("청록색 중앙 · 안전하게 통과");
+  const int64 First=FMath::FloorToInt64(R.Distance/600);
+  for(int I=0;I<25;++I){const auto T=HOORunner::Tile(First+I,R.Seed);const double Ahead=(First+I+.5)*600-R.Distance;
+   if(T.Risk!=EHOORunnerHazard::None && Ahead>0){const TCHAR* Action=T.Risk==EHOORunnerHazard::Overhead?TEXT("슬라이드"):TEXT("점프");Hint+=FString::Printf(TEXT("\n금색 %s · %s 도전 %.0f m"),T.RiskLane<0?TEXT("왼쪽"):TEXT("오른쪽"),Action,Ahead/100);break;}}
+  Change(SectionHint,Hint);
+ }
  FString Toast;
  if(R.Hits>PreviousHits && R.Lives>0)Toast=FString::Printf(TEXT("다시 달려요!  ·  남은 목숨 %d"),R.Lives);
  else if(R.FeverActivations>PreviousFever)Toast=TEXT("FEVER TIME  ·  지금은 무적!");
  else if(R.BoostersCollected>PreviousBoost)Toast=TEXT("BOOST!  ·  한계를 넘어!");
+ else if(R.RiskClears>PreviousRisk)Toast=TEXT("도전 성공!  ·  위험 보상 획득");
+ else if(R.NearMisses>PreviousNear)Toast=TEXT("아슬아슬!  ·  정밀 회피 보너스");
  else if(PreviousTheme>=0 && PreviousTheme!=static_cast<int32>(HOORunnerWorld::Biome(R.Distance)))Toast=P->GetDistrict();
  if(!Toast.IsEmpty()){Change(ToastText,Toast);ToastTime=1.5f;}
+ PreviousNear=R.NearMisses;PreviousRisk=R.RiskClears;
  PreviousHits=R.Hits;PreviousFever=R.FeverActivations;PreviousBoost=R.BoostersCollected;PreviousTheme=static_cast<int32>(HOORunnerWorld::Biome(R.Distance));
 }

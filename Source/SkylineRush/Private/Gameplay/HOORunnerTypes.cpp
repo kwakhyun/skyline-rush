@@ -20,10 +20,53 @@ float HOORunner::Speed(double DistanceCm)
         InitialSpeed, MaxSpeed);
 }
 
+EHOORunnerSpecial HOORunner::Special(double S)
+{
+    if(S<0) return EHOORunnerSpecial::None;
+    const int64 Local=FMath::FloorToInt64(S/TileLength)%500;
+    constexpr int Starts[]={60,144,228,288,452};
+    for(int I=0;I<5;++I) if(Local>=Starts[I] && Local<Starts[I]+24) return static_cast<EHOORunnerSpecial>(I+1);
+    return EHOORunnerSpecial::None;
+}
+int32 HOORunner::SpecialPhase(double S)
+{
+    constexpr int Starts[]={60,144,228,288,452};
+    const int I=static_cast<int>(Special(S))-1;
+    return I<0?-1:static_cast<int>(FMath::FloorToInt64(S/TileLength)%500)-Starts[I];
+}
+const TCHAR* HOORunner::SpecialName(EHOORunnerSpecial S)
+{
+    switch(S)
+    {
+    case EHOORunnerSpecial::TimberPass:return TEXT("거목 통로");
+    case EHOORunnerSpecial::Skyworks:return TEXT("스카이브리지 공사장");
+    case EHOORunnerSpecial::PrismHall:return TEXT("프리즘 보안 홀");
+    case EHOORunnerSpecial::JadeBridge:return TEXT("비취 유적 다리");
+    case EHOORunnerSpecial::RiftGarden:return TEXT("차원 에너지 관문");
+    default:return TEXT("");
+    }
+}
+
 FHOORunnerTile HOORunner::Tile(int64 Index, int32 Seed)
 {
     FHOORunnerTile Result;
     Result.Index = Index;
+    Result.Special=Special((Index+.5)*TileLength);
+    Result.SpecialPhase=SpecialPhase((Index+.5)*TileLength);
+    if(Result.Special!=EHOORunnerSpecial::None)
+    {
+        // 36m entrance warning, then 36m between optional jump/slide/gap challenges.
+        // Centre lane stays continuous for the full 144m section, at every speed.
+        Result.RiskLane=(Mix(static_cast<uint32>(Seed)^static_cast<uint32>(Index/500)^static_cast<uint32>(Result.Special))&1)?1:-1;
+        const int P=Result.SpecialPhase;
+        if(P==6 || P==12 || P==18)
+        {
+            Result.Risk=static_cast<EHOORunnerHazard>(P/6);
+            Result.Lanes[Result.RiskLane+1]=Result.Risk;
+        }
+        Result.bBooster=Index>=52 && (Index-52)%60==0 && Result.Risk==EHOORunnerHazard::None;
+        return Result;
+    }
     const double Local=FMath::Fmod((Index+.5)*TileLength,ThemeCycleLength);
     const auto Section=Theme((Index+.5)*TileLength);
     if(Section==EHOORunnerTheme::Loop || Section==EHOORunnerTheme::Launch || Section==EHOORunnerTheme::Flight)
@@ -337,6 +380,9 @@ void FHOORunnerState::Step(float Dt)
     for (int64 I = FMath::Max<int64>(0, TileIndex - 1); I <= TileIndex + 1; ++I)
     {
         const auto Tile = HOORunner::Tile(I, Seed);
+        auto& Pass=PassSamples[I%4];
+        if(Pass.Tile!=I) { Pass=FHOORunnerPassSample();Pass.Tile=I; }
+        const double SignedAlong=Distance-(I+.5)*HOORunner::TileLength;
         const double Along = FMath::Abs(Distance - (I + .5) * HOORunner::TileLength);
         const int64 Cycle=FMath::FloorToInt64(Distance/HOORunner::ThemeCycleLength);
         if(Tile.bLaunchPad && Along<275 && Cycle>LastLaunchCycle && Height<280)
@@ -350,6 +396,25 @@ void FHOORunnerState::Step(float Dt)
             const auto Hazard = Tile.Lanes[Lane + 1];
             if (Hazard == EHOORunnerHazard::None) continue;
             const float Width = Hazard == EHOORunnerHazard::Gap ? 118.0f : 142.0f;
+            const double PassDepth=Hazard==EHOORunnerHazard::Gap?275.:112.;
+            const float SideDistance=FMath::Abs(Lateral-Lane*HOORunner::LaneWidth);
+            const uint8 Bit=1<<(Lane+1);
+            if(Along<=PassDepth)
+            {
+                if(IsFever() || RecoveryRemaining>0 || IsFlying() || I<=ProtectedThroughTile) Pass.BlockedMask|=Bit;
+                const bool CloseSide=SideDistance>Width && SideDistance<=Width+48;
+                const bool CloseAction=SideDistance<=Width && ((Hazard==EHOORunnerHazard::Barrier && Height>=130 && Height<=180)
+                    || (Hazard==EHOORunnerHazard::Overhead && IsSliding() && SlideRemaining<=.2f)
+                    || (Hazard==EHOORunnerHazard::Gap && Height>=24 && Height<=75));
+                if(CloseSide || CloseAction) Pass.NearMask|=Bit;
+                if(Tile.Risk!=EHOORunnerHazard::None && Lane==Tile.RiskLane && SideDistance<105) Pass.bRiskEntered=true;
+            }
+            // Commit only after leaving the entire collision slab. A later hit cancels a sample.
+            if(SignedAlong>PassDepth && !Pass.bNearResolved && (Pass.NearMask&Bit) && !(Pass.BlockedMask&Bit)
+                && !IsFever() && RecoveryRemaining<=0 && !IsFlying() && I>ProtectedThroughTile)
+            {
+                Pass.bNearResolved=true;++NearMisses;StyleScore+=40*Multiplier();
+            }
             if (FMath::Abs(Lateral - Lane * HOORunner::LaneWidth) > Width) continue;
             const double Depth = Hazard == EHOORunnerHazard::Gap ? 275.0 : 112.0;
             if (Along > Depth) continue;
@@ -358,6 +423,7 @@ void FHOORunnerState::Step(float Dt)
                 || (Hazard == EHOORunnerHazard::Gap && Height < 24.0f);
             if (bHit && !IsFlying())
             {
+                Pass.BlockedMask|=Bit;
                 if(IsFever() || RecoveryRemaining>0) ProtectedThroughTile = FMath::Max(ProtectedThroughTile,I);
                 // A tile already crossed under the shield stays safe when fever expires mid-row.
                 if(I > ProtectedThroughTile)
@@ -370,6 +436,18 @@ void FHOORunnerState::Step(float Dt)
                     if(Hazard==EHOORunnerHazard::Gap) {Height=80;VerticalSpeed=450;TargetLane=0;}
 
                 }
+            }
+        }
+        const double RewardDepth=Tile.Risk==EHOORunnerHazard::Gap?275.:112.;
+        if(Tile.Risk!=EHOORunnerHazard::None && !Pass.bRiskResolved && SignedAlong>RewardDepth+30)
+        {
+            if(SignedAlong>RewardDepth+145) Pass.bRiskResolved=true;
+            else if(Pass.bRiskEntered && !(Pass.BlockedMask&(1<<(Tile.RiskLane+1)))
+                && FMath::Abs(Lateral-Tile.RiskLane*HOORunner::LaneWidth)<105 && !IsFever() && RecoveryRemaining<=0 && !IsFlying() && I>ProtectedThroughTile)
+            {
+                Pass.bRiskResolved=true;LastRiskTile=I;++RiskClears;++Coins;++Chain;
+                BestChain=FMath::Max(BestChain,Chain);ChainRemaining=2.5f;
+                PickupScore+=20*Multiplier();RiskScore+=80*Multiplier();ChargeFever(3);
             }
         }
         if(Tile.bBooster && I > LastBoosterTile && Along < 140.0

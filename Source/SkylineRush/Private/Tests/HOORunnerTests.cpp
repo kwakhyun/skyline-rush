@@ -257,7 +257,7 @@ bool FRunnerWorld::RunTest(const FString&)
     float Peak=0;
     while(Fly.Distance<260500 && Fly.Phase==EHOORunnerPhase::Running) {Fly.Advance(1.f/60);Peak=FMath::Max(Peak,Fly.Height);}
     TestTrue(TEXT("Pad flies across missing deck and lands in the next theme"),Fly.Launches==1 && Fly.Phase==EHOORunnerPhase::Running && !Fly.IsFlying() && Fly.Height==0 && Peak>6400 && HOORunner::Theme(Fly.Distance)==EHOORunnerTheme::Clouds);
-    FHOORunnerState Gap;Gap.Start();Gap.Distance=180100;Gap.Lives=1;Gap.Advance(.1f);
+    FHOORunnerState Gap;Gap.Start();Gap.Distance=194500;Gap.Lives=1;Gap.Advance(.1f);
     TestTrue(TEXT("Jump island full-width gaps require an action"),Gap.Phase==EHOORunnerPhase::Crashed);
     return true;
 }
@@ -265,7 +265,7 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FRunnerReplayExport,"HOO.Runner.OnlineReplayFix
 bool FRunnerReplayExport::RunTest(const FString&)
 {
     TArray<FString> Fixtures;
-    for(int Seed:{409,410})
+    for(int Seed:{409,410,411})
     {
         FHOORunnerState S;S.Reset(Seed);S.Start();TArray<FString> Inputs;
         auto Input=[&](const TCHAR* Action)
@@ -273,6 +273,7 @@ bool FRunnerReplayExport::RunTest(const FString&)
             Inputs.Add(FString::Printf(TEXT("{\"tick\":%d,\"action\":\"%s\"}"),S.SimulationTicks,Action));
             if(FCString::Strcmp(Action,TEXT("l"))==0) S.Move(-1);
             else if(FCString::Strcmp(Action,TEXT("r"))==0) S.Move(1);
+            else if(FCString::Strcmp(Action,TEXT("s"))==0) S.Slide();
             else S.Jump();
         };
         while(S.Distance<350000 && S.Phase==EHOORunnerPhase::Running && S.SimulationTicks<20000)
@@ -284,6 +285,16 @@ bool FRunnerReplayExport::RunTest(const FString&)
                 if(Ahead<-280 || T.bFlightGap) continue;
                 if(T.bBooster && Ahead>0 && Ahead<3500) {if(S.TargetLane!=0) Input(S.TargetLane>0?TEXT("l"):TEXT("r"));break;}
                 if(T.Lanes[0]==EHOORunnerHazard::None && T.Lanes[1]==EHOORunnerHazard::None && T.Lanes[2]==EHOORunnerHazard::None) continue;
+                if(Seed==411 && T.Risk!=EHOORunnerHazard::None)
+                {
+                    if(S.TargetLane!=T.RiskLane) Input(T.RiskLane>S.TargetLane?TEXT("r"):TEXT("l"));
+                    if(Ahead>0 && Ahead/S.CurrentSpeed<(T.Risk==EHOORunnerHazard::Gap?.31:.24))
+                    {
+                        if(T.Risk==EHOORunnerHazard::Overhead) {if(!S.IsSliding())Input(TEXT("s"));}
+                        else if(S.Height<1) Input(TEXT("j"));
+                    }
+                    break;
+                }
                 if(T.bJumpRow) {if(Ahead/S.CurrentSpeed<.31) Input(TEXT("j"));break;}
                 if(S.TargetLane!=T.SafeLane) Input(T.SafeLane>S.TargetLane?TEXT("r"):TEXT("l"));
                 break;
@@ -291,14 +302,17 @@ bool FRunnerReplayExport::RunTest(const FString&)
             S.Advance(1.f/60);
         }
         TestTrue(TEXT("Replay fixture completes every theme"),S.Distance>=350000 && S.Launches==1);
-        Fixtures.Add(FString::Printf(TEXT("{\"seed\":%d,\"ticks\":%d,\"rules_version\":6,\"client_score\":%d,\"distance\":%.6f,\"shards\":%d,\"fevers\":%d,\"launches\":%d,\"events\":[%s]}"),
+        if(Seed==411) TestTrue(TEXT("Risk replay actually exercises optional scoring"),S.RiskClears>0 && S.StyleScore>0);
+        Fixtures.Add(FString::Printf(TEXT("{\"seed\":%d,\"ticks\":%d,\"rules_version\":7,\"client_score\":%d,\"distance\":%.6f,\"shards\":%d,\"fevers\":%d,\"launches\":%d,\"events\":[%s]}"),
             Seed,S.SimulationTicks,S.Score(),S.Distance/100,S.Coins,S.FeverActivations,S.Launches,*FString::Join(Inputs,TEXT(","))));
+        Fixtures.Last().RemoveFromEnd(TEXT("}"));
+        Fixtures.Last()+=FString::Printf(TEXT(",\"riskScore\":%d,\"styleScore\":%d,\"risks\":%d,\"nearMisses\":%d}"),S.RiskScore,S.StyleScore,S.RiskClears,S.NearMisses);
     }
     {
         FHOORunnerState S;S.Reset(409);S.Start();
         while(S.Phase==EHOORunnerPhase::Running && S.SimulationTicks<30000) S.Advance(1.f/60);
         TestTrue(TEXT("No-input replay uses all three lives"),S.Lives==0 && S.Hits==3);
-        Fixtures.Add(FString::Printf(TEXT("{\"seed\":409,\"ticks\":%d,\"rules_version\":6,\"client_score\":%d,\"distance\":%.6f,\"shards\":%d,\"fevers\":%d,\"launches\":%d,\"lives\":0,\"hits\":3,\"events\":[]}"),S.SimulationTicks,S.Score(),S.Distance/100,S.Coins,S.FeverActivations,S.Launches));
+        Fixtures.Add(FString::Printf(TEXT("{\"seed\":409,\"ticks\":%d,\"rules_version\":7,\"client_score\":%d,\"distance\":%.6f,\"shards\":%d,\"fevers\":%d,\"launches\":%d,\"lives\":0,\"hits\":3,\"events\":[]}"),S.SimulationTicks,S.Score(),S.Distance/100,S.Coins,S.FeverActivations,S.Launches));
     }
     const FString Dir=FPaths::ProjectSavedDir()/TEXT("QA/Replay");
     IFileManager::Get().MakeDirectory(*Dir,true);
@@ -318,7 +332,7 @@ bool FRunnerLives::RunTest(const FString&)
  while(S.Phase==EHOORunnerPhase::Running && S.SimulationTicks<30000)S.Advance(1.f/120);
  TestTrue(TEXT("Third impact ends run"),S.Hits==3 && S.Lives==0 && S.Phase==EHOORunnerPhase::Crashed);
  S.Reset(410);TestTrue(TEXT("Retry restores lives and clears recovery"),S.Lives==3 && S.Hits==0 && S.RecoveryRemaining==0);
- S.Start();S.Distance=180000;S.Advance(.1f);
+ S.Start();S.Distance=194400;S.Advance(.1f);
  TestTrue(TEXT("Gap recovers instead of ending first life"),S.Lives==2 && S.Height>0 && S.Phase==EHOORunnerPhase::Running);
  return true;
 }
@@ -367,4 +381,42 @@ bool FRunnerWorldSequence::RunTest(const FString&)
     return true;
 }
 
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FRunnerSpecials,"HOO.Runner.SpecialRiskRewardAndNearMiss",EAutomationTestFlags::EditorContext|EAutomationTestFlags::ProductFilter)
+bool FRunnerSpecials::RunTest(const FString&)
+{
+    for(int Seed=400;Seed<416;++Seed)for(int Cycle=0;Cycle<20;++Cycle)for(int Start:{60,144,228,288,452})
+    {
+        int Encounters=0;
+        for(int P=0;P<24;++P)
+        {
+            const auto T=HOORunner::Tile(Cycle*500+Start+P,Seed);
+            if(T.Risk!=EHOORunnerHazard::None){++Encounters;TestTrue(TEXT("36m entrance and encounter warning"),P==6 || P==12 || P==18);}
+            TestTrue(TEXT("Special centre lane always open"),T.SafeLane==0 && T.Lanes[1]==EHOORunnerHazard::None);
+        }
+        TestEqual(TEXT("Exactly three optional layouts in each special section"),Encounters,3);
+    }
+    for(int I=0;I<3;++I)
+    {
+        const int64 Row=66+I*6;const auto T=HOORunner::Tile(Row,409);const double Depth=I==2?275:112,Center=(Row+.5)*600;
+        for(int Mode=0;Mode<3;++Mode)
+        {
+            FHOORunnerState S;S.Start();S.Distance=Center-Depth-10;S.TargetLane=T.RiskLane;S.Lateral=T.RiskLane*300;
+            if(I==0)S.Height=170;else if(I==1)S.SlideRemaining=.18f;else S.Height=75;
+            if(Mode==1){S.Height=0;S.SlideRemaining=0;}
+            if(Mode==2)S.FeverRemaining=2;
+            while(S.Distance<Center+Depth+160 && S.Phase==EHOORunnerPhase::Running)S.Advance(1.f/120);
+            if(Mode==0)
+            {
+                TestEqual(TEXT("Precise clean pass pays one near miss"),S.NearMisses,1);
+                TestEqual(TEXT("Each optional obstacle pays once"),S.RiskClears,1);
+                TestEqual(TEXT("Score breakdown sums exactly"),S.Score(),S.DistanceScore()+S.PickupScore+S.RiskScore+S.StyleScore);
+                const auto Bonus=S.StyleScore+S.RiskScore;S.TogglePause();S.Advance(.25f);S.TogglePause();S.Advance(.1f);
+                TestEqual(TEXT("Pause and lingering cannot repeat bonus"),S.StyleScore+S.RiskScore,Bonus);
+            }
+            else TestTrue(TEXT("Hit or invulnerability cannot earn precision/risk bonuses"),S.NearMisses==0 && S.RiskClears==0);
+            S.Reset(409);TestTrue(TEXT("Retry clears bonus counters and samples"),S.StyleScore==0 && S.RiskScore==0 && S.PassSamples[Row%4].Tile==-1);
+        }
+    }
+    return true;
+}
 #endif

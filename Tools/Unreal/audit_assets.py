@@ -14,6 +14,11 @@ for p in (R/'Source/SkylineRush').rglob('*'):
  roots.update(x.split('.')[0] for x in re.findall(r'"(/Game/[^"\s]+)"',p.read_text(encoding='utf-8')) if not x.endswith('/'))
 roots.update('/Game/SkylineRush/Characters/Animations/'+n for n in ['STUDENT_MM_Idle','STUDENT_MF_Unarmed_Jog_Fwd_Stable','STUDENT_MM_Jump','STUDENT_MM_Land','STUDENT_MM_Death_Front_01'])
 roots.update('/Game/SkylineRush/Environment/Materials/'+n for n in ['M_CoastalPanorama','M_GlowParticle'])
+roots.discard('/Game/SkylineRush/Environment/SpecialSections/SM_SP_')
+roots.discard('/Game/SkylineRush/Environment/SpecialSections/M_SP_')
+for n in ['Timber','Skyworks','Prism','Jade','Rift']:
+ roots.add('/Game/SkylineRush/Environment/SpecialSections/SM_SP_'+n+'Gate')
+ roots.add('/Game/SkylineRush/Environment/SpecialSections/M_SP_'+n)
 seen=set();edges={};external=set();pending=list(roots)
 while pending:
  p=pending.pop()
@@ -29,4 +34,3 @@ result={'roots':sorted(roots),'keep':sorted(seen),'unused':sorted(assets.keys()-
 unreal.log('SKYLINE_ASSET_AUDIT '+json.dumps({k:len(result[k]) for k in ['roots','keep','unused','missing']}))
 assert not result['missing'],result['missing']
 assert all(p.startswith('/Game/SkylineRush/') for p in seen), 'Legacy content dependency remains'
-

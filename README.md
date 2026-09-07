@@ -4,7 +4,7 @@
 
 ## 실행
 
-[Windows 프리뷰 다운로드](https://github.com/kwakhyun/skyline-rush/releases/tag/v0.6.0-preview.3) · [온라인 랭킹](https://skyline-rush-ranking.khyun97.chatgpt.site)
+[Windows 프리뷰 다운로드](https://github.com/kwakhyun/skyline-rush/releases/tag/v0.7.0-preview.1) · [온라인 랭킹](https://skyline-rush-ranking.khyun97.chatgpt.site)
 
 Windows 패키지는 ZIP 전체를 풀고 `SkylineRush.exe`를 실행합니다. Unreal Editor 설치는 필요하지 않습니다.
 
@@ -21,6 +21,8 @@ Space: 시작/점프 · A/D 또는 ←/→: 레인 변경 · S 또는 ↓: 슬�
 Breezy Adventure 두 곡이 차례로 반복됩니다. 일시정지하면 음악도 멈추고, 재도전 시에는 듣던 곡이 이어집니다. F1의 소리 크기 설정으로 효과음과 음악 음량을 함께 조절합니다.
 
 수집·피격·부스터·피버에는 각각 전용 효과음을 사용합니다. 긴 생성 음원을 짧게 편집하고 음량·끝부분을 보정했으며, 수집음이 과하게 겹치지 않도록 제한합니다.
+
+다섯 테마에 곡면 거목·강철 공사장·대리석 보안 홀·비취 유적·차원 관문 특별 구간을 구현했습니다. 청록색 안전 경로와 금색 도전 경로를 선택하고 점프·슬라이드·틈 통과 보상, 아슬아슬 점수를 획득합니다. 결과 화면에서 네 가지 점수 항목을 확인할 수 있습니다. [특별 구간 규칙](Docs/SPECIAL_SECTIONS.md) · [실제 화면과 검증](Docs/QA/special-sections.md)
 
 ## 구조
 

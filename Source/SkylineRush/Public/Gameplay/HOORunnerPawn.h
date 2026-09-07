@@ -110,6 +110,7 @@ private:
     bool bCameraInitialized = false;
     int64 LastOrbTile = -1;
     int64 LastBoosterVisual = -1;
+    int64 LastRiskVisual = -1;
     int64 LastProtectedVisual = -1;
     TArray<FHOORunnerScoreEntry> LocalScores;
     TArray<FHOORunnerRankEntry> OnlineRanks;

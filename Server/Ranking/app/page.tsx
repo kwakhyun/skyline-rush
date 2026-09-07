@@ -6,9 +6,9 @@ import {Table,TableBody,TableCell,TableHead,TableHeader,TableRow} from "@/compon
 type Entry={rank:number;nickname:string;score:number;distance:number};
 export default function Page(){
  const [rows,setRows]=useState<Entry[]>([]),[busy,setBusy]=useState(true),[error,setError]=useState(""),[updated,setUpdated]=useState("");
- const refresh=useCallback(async()=>{setBusy(true);setError("");try{const r=await fetch("/api/runner");if(!r.ok)throw Error();const data=await r.json();setRows(data.entries);setUpdated(new Date().toLocaleTimeString("ko-KR"));}catch{setError("랭킹을 불러오지 못했어요. 다시 시도해 주세요.");}finally{setBusy(false);}},[]);
+ const refresh=useCallback(async()=>{setBusy(true);setError("");try{const r=await fetch("/api/runner?rules_version=7");if(!r.ok)throw Error();const data=await r.json();setRows(data.entries);setUpdated(new Date().toLocaleTimeString("ko-KR"));}catch{setError("랭킹을 불러오지 못했어요. 다시 시도해 주세요.");}finally{setBusy(false);}},[]);
  useEffect(()=>{void refresh();},[refresh]);
- return <main className="ranking-shell"><header className="brand"><span className="brand-icon"><ArrowUpRight size={26}/></span><span>SKYLINE <b>RUSH</b></span><span className="season">시즌 2</span></header>
+ return <main className="ranking-shell"><header className="brand"><span className="brand-icon"><ArrowUpRight size={26}/></span><span>SKYLINE <b>RUSH</b></span><span className="season">시즌 3</span></header>
  <section className="intro"><div className="eyebrow"><Sparkles size={16}/> 더 멀리, 더 빠르게!</div><h1>하늘 끝까지 달린<br/>우리의 최고기록</h1><p>스카이라인 러시의 온라인 랭킹.<br/>당신의 다음 도전은 몇 위일까요?</p></section>
  <section className="board" aria-label="온라인 랭킹"><div className="board-title"><div><Trophy/><h2>명예의 전당 <span>TOP 10</span></h2></div><Button variant="outline" onClick={refresh} disabled={busy}><RefreshCw size={16} className={busy?"spin":""}/>{busy?"불러오는 중":"새로고침"}</Button></div>
  <p className="board-caption">러너마다 가장 높은 점수 하나를 표시해요. 점수가 같으면 더 멀리 달린 기록이 앞서요.</p>

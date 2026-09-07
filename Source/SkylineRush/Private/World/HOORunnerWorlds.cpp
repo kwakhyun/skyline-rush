@@ -8,7 +8,8 @@ namespace
 {
     constexpr double Bounds[]={0,60000,126000,166000,206000,300000};
     enum Pool { Ground, Broadleaf, Cedar, Rocks, Towers, Walls, WindowPanels, Roof,
-        Columns, Lights, Palms, Fronds, Ferns, Ruins, Vines, VoidBlocks, VoidLines, Portal, SideFloor, Count };
+        Columns, Lights, Palms, Fronds, Ferns, Ruins, Vines, VoidBlocks, VoidLines, Portal, SideFloor,
+        TimberGate, SkyworksGate, PrismGate, JadeGate, RiftGate, SpecialTrim, Count };
 }
 EHOORunnerBiome HOORunnerWorld::Biome(double S)
 {
@@ -67,6 +68,10 @@ AHOORunnerWorlds::AHOORunnerWorlds()
     Add(TEXT("DimensionTesseracts"),Cube,TEXT("/Game/SkylineRush/Environment/Materials/M_VioletLight"),24);
     Add(TEXT("WorldThresholds"),Cube,TEXT("/Game/SkylineRush/Environment/Materials/MI_Cyan"),3);
     Add(TEXT("AtriumSideFloor"),Cube,TEXT("/Game/SkylineRush/Environment/Materials/M_AtriumFloor"),2);
+    const TCHAR* Themes[]={TEXT("Timber"),TEXT("Skyworks"),TEXT("Prism"),TEXT("Jade"),TEXT("Rift")};
+    for(const auto* T:Themes)
+        Add(*(FString(T)+TEXT("SpecialGate")),*(FString(TEXT("/Game/SkylineRush/Environment/SpecialSections/SM_SP_"))+T+TEXT("Gate")),nullptr,1,true);
+    Add(TEXT("SpecialArchitecturalTrim"),Cube,TEXT("/Game/SkylineRush/Environment/Materials/MI_Gold"),6);
 }
 void AHOORunnerWorlds::Present(double Distance)
 {
@@ -137,4 +142,15 @@ void AHOORunnerWorlds::Place(int32 Slot,int64 Tile)
     Set(Portal,0,{0,-650,400},{.45,.45,8},Threshold);
     Set(Portal,1,{0,650,400},{.45,.45,8},Threshold);
     Set(Portal,2,{0,0,800},{.45,13.4,.45},Threshold);
+    const auto Special=HOORunner::Special(S);const int Phase=HOORunner::SpecialPhase(S);
+    const bool Landmark=Phase==0 || Phase==6 || Phase==12 || Phase==18 || Phase==23;
+    for(int I=0;I<5;++I)
+        Set(TimberGate+I,0,{0,0,-20},FVector(1),Landmark && static_cast<int>(Special)==I+1);
+    // Narrow luminous rails sit outside the three lanes. They reveal depth without
+    // masking gameplay gaps or adding transparent overdraw/full-screen effects.
+    for(int I=0;I<6;++I)
+    {
+        const int Side=I%2?1:-1;const int Layer=I/2;
+        Set(SpecialTrim,I,{0,Side*(650.+Layer*65),80.+Layer*110},{6,.07,.07},Special!=EHOORunnerSpecial::None && !Forest);
+    }
 }

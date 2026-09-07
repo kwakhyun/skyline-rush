@@ -30,4 +30,7 @@ private:
  void CheckReview(const TCHAR* Name,bool bPassed);
  TArray<TSharedPtr<class FJsonValue>> ReviewChecks;
  double ReviewDistance=0;
+ TArray<int32> SpecialReplayTicks;
+ TArray<FString> SpecialReplayActions;
+ int32 SpecialReplayCursor=0,SpecialReplayEnd=0,SpecialReplayScore=0;
 };

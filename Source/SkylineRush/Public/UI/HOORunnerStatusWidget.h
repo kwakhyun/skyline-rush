@@ -20,6 +20,10 @@ private:
  UPROPERTY() TObjectPtr<UTextBlock> PowerText;
  UPROPERTY() TObjectPtr<UTextBlock> ComboText;
  UPROPERTY() TObjectPtr<UTextBlock> ToastText;
+ UPROPERTY() TObjectPtr<UTextBlock> SectionText;
+ UPROPERTY() TObjectPtr<UTextBlock> SectionHint;
+ UPROPERTY() TObjectPtr<UBorder> SectionPanel;
+ int32 PreviousNear=0,PreviousRisk=0;
  UPROPERTY() TObjectPtr<UProgressBar> FeverBar;
  UPROPERTY() TObjectPtr<UProgressBar> RouteBar;
  UPROPERTY() TArray<TObjectPtr<UTextBlock>> Hearts;
