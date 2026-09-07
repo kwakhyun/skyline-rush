@@ -36,12 +36,13 @@ void AHOORunnerVisualQA::Initialize(AHOORunnerPawn* InRunner)
  IFileManager::Get().MakeDirectory(*Out,true);
  bVideo=FParse::Param(FCommandLine::Get(),TEXT("RunnerQAVideo"));
  StartTime=PreviousTime=FPlatformTime::Seconds();FApp::SetUseFixedTimeStep(true);FApp::SetFixedDeltaTime(1./60.);
- Runner->QualityLevel=2;Runner->bReducedMotion=false;Runner->ApplyPreferences();Runner->VolumePercent=0;
+ Runner->QualityLevel=2;Runner->bReducedMotion=false;Runner->ApplyPreferences();
+ Runner->VolumePercent=FParse::Param(FCommandLine::Get(),TEXT("RunnerQAAudio"))?75:0;
  Runner->Run.Reset(409);Runner->bVisualQAFrozen=true;Runner->BestScore=0;Runner->BestDistance=0;Runner->StartingBest=0;Runner->LocalScores.Reset();
  Runner->UpdateCourse(true);
  if(GEngine && GEngine->GameViewport && GEngine->GameViewport->GetWindow())GEngine->GameViewport->GetWindow()->SetTitle(FText::FromString(TEXT("SKYLINE RUSH - Visual QA ")+Tag));
  for(const auto* C:{TEXT("r.VSync 0"),TEXT("r.ScreenPercentage 100"),TEXT("r.GPUStatsEnabled 1"),TEXT("r.GPUCsvStatsEnabled 1"),TEXT("csv.CompressionMode 0"),TEXT("t.IdleWhenNotForeground 0"),TEXT("Slate.bAllowThrottling 0"),TEXT("DisableAllScreenMessages")})UGameplayStatics::GetPlayerController(this,0)->ConsoleCommand(C,false);
- UGameplayStatics::GetPlayerController(this,0)->ConsoleCommand(bVideo?TEXT("t.MaxFPS 60"):TEXT("t.MaxFPS 0"),false);
+ UGameplayStatics::GetPlayerController(this,0)->ConsoleCommand((bVideo || FParse::Param(FCommandLine::Get(),TEXT("RunnerQAAudio")))?TEXT("t.MaxFPS 60"):TEXT("t.MaxFPS 0"),false);
  if(GEngine->GameViewport->GetWindow().IsValid())GEngine->GameViewport->GetWindow()->BringToFront(true);
  UE_LOG(LogTemp,Display,TEXT("VISUAL_QA_READY %s"),*Out);
 }

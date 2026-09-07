@@ -1,0 +1,50 @@
+[
+  {
+    "name": "SFX_CrystalPickup",
+    "original_seconds": 4.96,
+    "start_seconds": 0.0,
+    "seconds": 0.35,
+    "fade_out_seconds": 0.09,
+    "gain_db": 7.0303562849702805,
+    "peak_dbfs": -2.9999878172428636,
+    "original_sha256": "f57e1dcc4ccb65e5a5c1da0434d3fc86a38cda65f4772f11118fd3e9810767c2",
+    "processed_sha256": "a3413a929f4d7a0f42e913de6aae46d1daeb4b2e3fcd81f3725cf79ddb374b3f",
+    "asset": "/Game/SkylineRush/Audio/SFX/SFX_CrystalPickup"
+  },
+  {
+    "name": "SFX_ObstacleHit",
+    "original_seconds": 2.0,
+    "start_seconds": 0.0,
+    "seconds": 0.95,
+    "fade_out_seconds": 0.12,
+    "gain_db": 1.2727782388448237,
+    "peak_dbfs": -2.9999878172428636,
+    "original_sha256": "415c57deb262fa8562a3829d51d298fe9f752a8ea2dd557082737d848e202baf",
+    "processed_sha256": "0c0713ddece047d24c3d6a41be0af1408fc26ed188de3096c1fd13f7d586c79b",
+    "asset": "/Game/SkylineRush/Audio/SFX/SFX_ObstacleHit"
+  },
+  {
+    "name": "SFX_BoostActivate",
+    "original_seconds": 5.0,
+    "start_seconds": 0.0,
+    "seconds": 1.4,
+    "fade_out_seconds": 0.4,
+    "gain_db": -0.7905743178750096,
+    "peak_dbfs": -7.322768581036058,
+    "original_sha256": "0212841eee8364df9d57a66abf77c52aed2224e0e5166a2bc3a9592f161b2118",
+    "processed_sha256": "84cdfd14e87f12fa652e321fac01b1e07967422b3e183bc35ecaa14154b4f777",
+    "asset": "/Game/SkylineRush/Audio/SFX/SFX_BoostActivate"
+  },
+  {
+    "name": "SFX_FeverActivate",
+    "original_seconds": 8.76,
+    "start_seconds": 0.25,
+    "seconds": 1.8,
+    "fade_out_seconds": 0.45,
+    "gain_db": 2.0604515563325507,
+    "peak_dbfs": -2.9999878172428636,
+    "original_sha256": "9f0c48c83c3293b6d32e0758cdaac59225583328028ccb5918acc71771be8b56",
+    "processed_sha256": "732560388579b3bd61c6eef2847d44c90e8e64c012a1e746c30b52ba9387ec82",
+    "asset": "/Game/SkylineRush/Audio/SFX/SFX_FeverActivate"
+  }
+]

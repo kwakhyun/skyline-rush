@@ -14,6 +14,7 @@ class UInstancedStaticMeshComponent;
 class UAnimSequence;
 class USoundBase;
 class UAudioComponent;
+class USoundConcurrency;
 class UStaticMesh;
 class UMaterialInterface;
 
@@ -82,6 +83,11 @@ private:
     UPROPERTY() TObjectPtr<UAnimSequence> FallAnimation;
     UPROPERTY() TObjectPtr<USoundBase> PickupSound;
     UPROPERTY() TObjectPtr<USoundBase> CrashSound;
+    UPROPERTY() TObjectPtr<USoundBase> BoostSound;
+    UPROPERTY() TObjectPtr<USoundBase> FeverSound;
+    UPROPERTY() TObjectPtr<USoundConcurrency> PickupConcurrency;
+    UPROPERTY() TObjectPtr<USoundConcurrency> AccentConcurrency;
+    void PlayRunnerSFX(USoundBase* Sound,float Gain,float Pitch,const TCHAR* Event);
     UPROPERTY() TObjectPtr<UAudioComponent> MusicAudio;
     UPROPERTY() TArray<TObjectPtr<USoundBase>> MusicTracks;
     int32 MusicTrackIndex = -1;

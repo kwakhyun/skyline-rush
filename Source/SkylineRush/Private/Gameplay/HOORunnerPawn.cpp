@@ -13,6 +13,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "Materials/MaterialInterface.h"
 #include "Sound/SoundBase.h"
+#include "Sound/SoundConcurrency.h"
 #include "Engine/StaticMesh.h"
 #include "Engine/SkeletalMesh.h"
 #include "UObject/ConstructorHelpers.h"
@@ -70,8 +71,20 @@ AHOORunnerPawn::AHOORunnerPawn()
     JumpAnimation=Animation(TEXT("STUDENT_MM_Jump"));
     SlideAnimation=Animation(TEXT("STUDENT_MM_Land"));
     FallAnimation=Animation(TEXT("STUDENT_MM_Death_Front_01"));
-    PickupSound=LoadObject<USoundBase>(nullptr,TEXT("/Game/SkylineRush/Audio/SFX_Hit_Confirm"));
-    CrashSound=LoadObject<USoundBase>(nullptr,TEXT("/Game/SkylineRush/Audio/SFX_Player_Damage"));
+    PickupSound=LoadObject<USoundBase>(nullptr,TEXT("/Game/SkylineRush/Audio/SFX/SFX_CrystalPickup"));
+    CrashSound=LoadObject<USoundBase>(nullptr,TEXT("/Game/SkylineRush/Audio/SFX/SFX_ObstacleHit"));
+    BoostSound=LoadObject<USoundBase>(nullptr,TEXT("/Game/SkylineRush/Audio/SFX/SFX_BoostActivate"));
+    FeverSound=LoadObject<USoundBase>(nullptr,TEXT("/Game/SkylineRush/Audio/SFX/SFX_FeverActivate"));
+    PickupConcurrency=CreateDefaultSubobject<USoundConcurrency>(TEXT("RunnerPickupConcurrency"));
+    AccentConcurrency=CreateDefaultSubobject<USoundConcurrency>(TEXT("RunnerAccentConcurrency"));
+    for(auto* Limit:{PickupConcurrency.Get(),AccentConcurrency.Get()})
+    {
+        Limit->Concurrency.bLimitToOwner=true;
+        Limit->Concurrency.ResolutionRule=EMaxConcurrentResolutionRule::StopOldest;
+        Limit->Concurrency.VoiceStealReleaseTime=.03f;
+    }
+    PickupConcurrency->Concurrency.MaxCount=2;
+    AccentConcurrency->Concurrency.MaxCount=3;
     MusicAudio=CreateDefaultSubobject<UAudioComponent>(TEXT("RunnerMusic"));
     MusicAudio->SetupAttachment(Root);
     MusicAudio->bAutoActivate=false;
@@ -233,20 +246,21 @@ void AHOORunnerPawn::Tick(float Dt)
         else if(!bVisualQAFrozen) Run.Advance(Dt);
     }
     if(HOORunner::Difficulty(Run.Distance)>PreviousLevel) StagePulse=2.5f;
-    if(Run.Hits>PreviousHits && Run.Lives>0 && CrashSound) UGameplayStatics::PlaySound2D(this,CrashSound,.55f*VolumePercent/100.f,1.2f);
+    if(Run.Hits>PreviousHits && Run.Lives>0) PlayRunnerSFX(CrashSound,.50f,1.f,TEXT("hit"));
     if(Run.Coins>PreviousCoins)
     {
         PickupPulse=1.0f;
-        if(PickupSound) UGameplayStatics::PlaySound2D(this,PickupSound,.30f*VolumePercent/100.f,1.35f+.10f*Run.Multiplier());
+        if(Run.BoostersCollected==PreviousBoosters && Run.FeverActivations==PreviousFevers)
+            PlayRunnerSFX(PickupSound,.34f,FMath::Min(1.12f,1.f+.025f*(Run.Multiplier()-1)),TEXT("pickup"));
     }
     if(Run.BoostersCollected>PreviousBoosters)
     {
-        if(PickupSound) UGameplayStatics::PlaySound2D(this,PickupSound,.65f*VolumePercent/100.f,.8f);
+        PlayRunnerSFX(BoostSound,.45f,1.f,TEXT("boost"));
         UE_LOG(LogTemp,Display,TEXT("RUNNER_BOOST distance=%.2f count=%d"),Run.Distance/100.,Run.BoostersCollected);
     }
     if(Run.FeverActivations>PreviousFevers)
     {
-        if(PickupSound) UGameplayStatics::PlaySound2D(this,PickupSound,.75f*VolumePercent/100.f,1.05f);
+        PlayRunnerSFX(FeverSound,.50f,1.f,TEXT("fever"));
         UE_LOG(LogTemp,Display,TEXT("RUNNER_FEVER distance=%.2f count=%d"),Run.Distance/100.,Run.FeverActivations);
     }
     PickupPulse=FMath::Max(0.0f,PickupPulse-Dt*2.5f);
@@ -256,7 +270,7 @@ void AHOORunnerPawn::Tick(float Dt)
         if(Previous!=EHOORunnerPhase::Crashed)
         {
             SaveRecord();
-            if(CrashSound) UGameplayStatics::PlaySound2D(this,CrashSound,.55f*VolumePercent/100.f,1.0f);
+            PlayRunnerSFX(CrashSound,.50f,1.f,TEXT("crash"));
             UE_LOG(LogTemp,Display,TEXT("RUNNER_CRASH distance=%.2fm hazard=%s"),Run.Distance/100.0,HOORunner::HazardName(Run.Failure));
         }
     }
