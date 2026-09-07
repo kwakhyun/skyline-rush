@@ -1,0 +1,47 @@
+{
+  "before_bytes": 19150419307,
+  "after_bytes": 3659165648,
+  "removed_file_operations": 6382,
+  "before_packages": 938,
+  "after_packages": 103,
+  "before_source_files": 75,
+  "after_source_files": 25,
+  "groups": {
+    "Content": {
+      "before_bytes": 1156810764,
+      "after_bytes": 83953470
+    },
+    "Source": {
+      "before_bytes": 551856,
+      "after_bytes": 187151
+    },
+    "SourceArt": {
+      "before_bytes": 352709197,
+      "after_bytes": 122718565
+    },
+    "Server": {
+      "before_bytes": 585469049,
+      "after_bytes": 482641437
+    },
+    "Binaries": {
+      "before_bytes": 831797178,
+      "after_bytes": 69209007
+    },
+    "Intermediate": {
+      "before_bytes": 5176767222,
+      "after_bytes": 2793283180
+    },
+    "Saved": {
+      "before_bytes": 9849049326,
+      "after_bytes": 93881596
+    },
+    "Design": {
+      "before_bytes": 1156294687,
+      "after_bytes": 0
+    },
+    "Docs": {
+      "before_bytes": 166549,
+      "after_bytes": 13246752
+    }
+  }
+}

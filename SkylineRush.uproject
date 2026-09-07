@@ -1,0 +1,31 @@
+{
+  "FileVersion": 3,
+  "EngineAssociation": "5.8",
+  "Category": "Games",
+  "Description": "SKYLINE RUSH - third-person high-speed endless runner",
+  "Modules": [
+    {
+      "Name": "SkylineRush",
+      "Type": "Runtime",
+      "LoadingPhase": "Default"
+    }
+  ],
+  "Plugins": [
+    {
+      "Name": "PythonScriptPlugin",
+      "Enabled": true
+    },
+    {
+      "Name": "EditorScriptingUtilities",
+      "Enabled": true
+    },
+    {
+      "Name": "ControlRig",
+      "Enabled": true
+    },
+    {
+      "Name": "IKRig",
+      "Enabled": true
+    }
+  ]
+}

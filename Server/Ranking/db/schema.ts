@@ -1,0 +1,4 @@
+import {sqliteTable,text,integer,real,index,uniqueIndex} from "drizzle-orm/sqlite-core";
+export const players=sqliteTable("players",{id:text("id").primaryKey(),tokenHash:text("token_hash").notNull(),nickname:text("nickname").notNull(),createdAt:integer("created_at").notNull()},t=>[uniqueIndex("players_token").on(t.tokenHash)]);
+export const runs=sqliteTable("runs",{id:text("id").primaryKey(),playerId:text("player_id").notNull().references(()=>players.id),board:text("board").notNull(),score:integer("score").notNull(),distance:real("distance").notNull(),ticks:integer("ticks").notNull(),seed:integer("seed").notNull(),replayHash:text("replay_hash").notNull(),createdAt:integer("created_at").notNull()},t=>[index("runs_board_score").on(t.board,t.score),index("runs_player_board").on(t.playerId,t.board)]);
+export const requestLimits=sqliteTable("request_limits",{key:text("key").primaryKey(),hits:integer("hits").notNull(),expires:integer("expires").notNull()});

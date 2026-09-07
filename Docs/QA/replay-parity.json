@@ -1,0 +1,28 @@
+{
+  "status": "passed",
+  "http_requests": 0,
+  "rules_version": 6,
+  "results": [
+    {
+      "seed": 409,
+      "ticks": 10716,
+      "score": 26740,
+      "distance": 3500.0984369277953,
+      "passed": true
+    },
+    {
+      "seed": 410,
+      "ticks": 10716,
+      "score": 26340,
+      "distance": 3500.0984369277953,
+      "passed": true
+    },
+    {
+      "seed": 409,
+      "ticks": 3621,
+      "score": 6576,
+      "distance": 936.5641315746308,
+      "passed": true
+    }
+  ]
+}

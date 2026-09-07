@@ -1,0 +1,27 @@
+# 공개 소스와 배포
+
+공개 저장소는 현재 SKYLINE RUSH의 C++, 랭킹 서버, 제작·검증 도구, 설정과 문서를 담은 독립적인 소스 스냅샷입니다. 이전 게임의 Git 기록과 별도 랭킹 저장소의 Git 내부 파일은 포함하지 않습니다.
+
+캐릭터 VRM 메타데이터에는 원본 모델 단독 재배포 제한이 있습니다. 공개 소스에는 Content의 Unreal 에셋, 편집용 모델과 원본 텍스처·음원을 포함하지 않습니다. 게임 화면과 출처 문서는 유지합니다. 따라서 공개 저장소만 복제해서는 같은 게임 화면을 실행하거나 패키징할 수 없습니다. 게임 실행에는 별도로 제공되는 Windows 패키지, 개발에는 권한이 있는 원본 에셋이 필요합니다. 자세한 출처는 [ASSET_PROVENANCE.md](ASSET_PROVENANCE.md)를 참고하세요.
+
+코드를 공개한다고 해서 별도의 오픈소스 또는 에셋 재배포 라이선스를 부여하지 않습니다. 기존 저작권 표시와 각 의존성의 라이선스를 유지합니다.
+
+## 소스 내보내기
+
+원본 프로젝트에서 다음 명령을 실행합니다. 대상 폴더는 새 경로여야 합니다.
+
+```powershell
+.\Tools\export_public_source.ps1 -Destination "$PWD\Saved\QA\PublicSource-next"
+```
+
+내보낸 폴더를 별도 Git 저장소로 관리합니다. Docs의 이미지에는 Git LFS를 사용합니다. Server/Ranking의 중첩 저장소는 일반 소스 파일로 포함하며, .openai/hosting.json은 비밀정보가 없는 기존 서비스 식별자와 논리 DB 바인딩만 포함합니다. 새로운 서비스로 배포할 때에는 자신의 Sites 설정을 사용해야 합니다.
+
+## Windows 패키지
+
+원본 에셋이 있는 프로젝트와 Unreal Engine 5.8이 필요합니다.
+
+```powershell
+& 'C:\Program Files\Epic Games\UE_5.8\Engine\Build\BatchFiles\RunUAT.bat' BuildCookRun "-project=$PWD\SkylineRush.uproject" -noP4 -platform=Win64 -clientconfig=Shipping -build -cook '-map=/Game/SkylineRush/Maps/L_SkylineRush' -stage -pak -iostore -compressed -archive "-archivedirectory=$PWD\Saved\QA\Release" -prereqs -utf8output -unattended
+```
+
+배포 파일에는 cooked 게임 데이터와 실행 파일을 담고 편집 원본과 디버그 심볼은 포함하지 않습니다. Steam 등록·판매는 별도 작업입니다.

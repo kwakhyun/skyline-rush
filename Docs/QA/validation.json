@@ -1,0 +1,38 @@
+{
+  "editor_build": "passed",
+  "engine": "5.8.1",
+  "target": "SkylineRushEditor Win64 Development",
+  "runner_tests": {
+    "passed": 12,
+    "failed": 0,
+    "names": [
+      "HOO.Runner.BestEligibleOnlineRecord",
+      "HOO.Runner.ChainRewardsAndPause",
+      "HOO.Runner.CornerSpineAndLaneFrames",
+      "HOO.Runner.FeverAndBoosterLifecycle",
+      "HOO.Runner.FiveWorldSequence",
+      "HOO.Runner.JumpSlideGapAndHitch",
+      "HOO.Runner.OnlineReplayFixtures",
+      "HOO.Runner.PowerDeterminism",
+      "HOO.Runner.ProgressionAndDeterminism",
+      "HOO.Runner.ReachableGeneratedRoutes",
+      "HOO.Runner.ThemesLoopAndLaunch",
+      "HOO.Runner.ThreeLivesRecovery"
+    ]
+  },
+  "ui_checks": {
+    "passed": 21,
+    "failed": 0
+  },
+  "offline_replays": 3,
+  "ranking_build": "passed",
+  "ranking_packages_pruned": 337,
+  "active_asset_packages": 103,
+  "unused_packages": 0,
+  "missing_packages": 0,
+  "simulation_unchanged": true,
+  "saved_record_files_loaded_unchanged": 5,
+  "source_reimport_paths_updated": 51,
+  "shipping_package_tested": false,
+  "deployed": false
+}

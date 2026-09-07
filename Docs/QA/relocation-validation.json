@@ -1,0 +1,35 @@
+{
+  "reimport_paths_updated": 51,
+  "records": [
+    {
+      "slot": "SkylineRush_Record_v1",
+      "loaded": true,
+      "class": "/Script/SkylineRush.HOORunnerRecord",
+      "unchanged": true
+    },
+    {
+      "slot": "SkylineRush_Record_v2",
+      "loaded": true,
+      "class": "/Script/SkylineRush.HOORunnerRecord",
+      "unchanged": true
+    },
+    {
+      "slot": "SkylineRush_Record_v3",
+      "loaded": true,
+      "class": "/Script/SkylineRush.HOORunnerRecord",
+      "unchanged": true
+    },
+    {
+      "slot": "SkylineRush_Record_v4",
+      "loaded": true,
+      "class": "/Script/SkylineRush.HOORunnerRecord",
+      "unchanged": true
+    },
+    {
+      "slot": "SkylineRush_Record_v5",
+      "loaded": true,
+      "class": "/Script/SkylineRush.HOORunnerRecord",
+      "unchanged": true
+    }
+  ]
+}

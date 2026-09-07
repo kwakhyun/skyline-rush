@@ -1,0 +1,9 @@
+{
+  "date": "2026-09-07",
+  "tool": "image_gen.imagegen (built-in)",
+  "kind": "AI-generated original background panorama",
+  "source_file": "SourceArt/Environment/Coastal/CoastalPanorama_v6.png",
+  "original_output": "C:/Users/82105/.codex/generated_images/01a0709b-d285-7c71-bceb-83b6e86fac27/exec-3eb20b43-0aa9-4248-beea-bfaa6e28df28.png",
+  "prompt": "Use case: photorealistic-natural. Asset type: seamless equirectangular 360-degree panoramic environment texture for a high-speed 3D coastal sky runner, 2:1 width-to-height image. Create an extraordinarily beautiful photoreal coastal landscape at luminous late afternoon: sweeping deep turquoise ocean, a distant sophisticated modern waterfront skyline of slender glass towers across a bay, towering rugged limestone island mountains with fine stratified rock, lush vegetation, small beaches, distant layered blue mountain ranges. Rich enormous white cumulus clouds with warm sunlight and realistic blue sky, subtle atmospheric perspective and sparkling ocean. True photographic surface detail, believable natural materials and lighting, cinematic travel photography, exquisite crisp detail and restrained bloom, realistic vibrant color. Panorama horizon stays exactly at vertical middle; upper half is sky and clouds, lower half water and distant shore, no foreground objects and no racing road. Camera is over open water. Equirectangular spherical panorama projection with left and right edges seamlessly matching, zenith sky and nadir water. No people, no characters, no text, no interface, no logos, no vehicles close to camera, no illustration or painted stylization. This is background scenery far behind separate 3D gameplay geometry.",
+  "usage": "Unlit spherical distant scenery. Nearby buildings, terrain and water remain 3D. No external game artwork imported."
+}

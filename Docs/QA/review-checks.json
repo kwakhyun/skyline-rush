@@ -1,0 +1,88 @@
+{
+	"checks": [
+		{
+			"check": "Higher score with shorter distance earns record badge",
+			"passed": true
+		},
+		{
+			"check": "Gamepad cancel remains slide while running",
+			"passed": true
+		},
+		{
+			"check": "App deactivation pauses a run",
+			"passed": true
+		},
+		{
+			"check": "No distance advances while inactive",
+			"passed": true
+		},
+		{
+			"check": "App activation never auto-resumes",
+			"passed": true
+		},
+		{
+			"check": "Records open from pause",
+			"passed": true
+		},
+		{
+			"check": "Cancel closes records and preserves pause",
+			"passed": true
+		},
+		{
+			"check": "Settings open from pause",
+			"passed": true
+		},
+		{
+			"check": "Cancel closes settings and preserves pause",
+			"passed": true
+		},
+		{
+			"check": "Explicit resume has countdown",
+			"passed": true
+		},
+		{
+			"check": "Resume countdown freezes simulation",
+			"passed": true
+		},
+		{
+			"check": "Second pause displays current score",
+			"passed": true
+		},
+		{
+			"check": "Nickname editor blocks gameplay dispatch",
+			"passed": true
+		},
+		{
+			"check": "Cancel dismisses nickname editor",
+			"passed": true
+		},
+		{
+			"check": "Korean nickname is accepted",
+			"passed": true
+		},
+		{
+			"check": "Invalid nickname is rejected",
+			"passed": true
+		},
+		{
+			"check": "Retry clears stale power toast and score pulse",
+			"passed": true
+		},
+		{
+			"check": "Settings opened during play returns to countdown",
+			"passed": true
+		},
+		{
+			"check": "Records opened during play returns to countdown",
+			"passed": true
+		},
+		{
+			"check": "Retry result displays its own score",
+			"passed": true
+		},
+		{
+			"check": "Unassisted second run ends after three impacts",
+			"passed": true
+		}
+	]
+}

@@ -1,0 +1,549 @@
+{
+  "roots": [
+    "/Game/SkylineRush/Audio/SFX_Hit_Confirm",
+    "/Game/SkylineRush/Audio/SFX_Player_Damage",
+    "/Game/SkylineRush/Characters/Animations/STUDENT_MF_Unarmed_Jog_Fwd_Stable",
+    "/Game/SkylineRush/Characters/Animations/STUDENT_MM_Death_Front_01",
+    "/Game/SkylineRush/Characters/Animations/STUDENT_MM_Idle",
+    "/Game/SkylineRush/Characters/Animations/STUDENT_MM_Jump",
+    "/Game/SkylineRush/Characters/Animations/STUDENT_MM_Land",
+    "/Game/SkylineRush/Characters/Meshes/SK_StudentHero_IllustrationV2",
+    "/Game/SkylineRush/Environment/Materials/MI_Coral",
+    "/Game/SkylineRush/Environment/Materials/MI_Cyan",
+    "/Game/SkylineRush/Environment/Materials/MI_Gold",
+    "/Game/SkylineRush/Environment/Materials/MI_Ink",
+    "/Game/SkylineRush/Environment/Materials/MI_Ivory",
+    "/Game/SkylineRush/Environment/Materials/M_AeroCliff",
+    "/Game/SkylineRush/Environment/Materials/M_AeroGlass",
+    "/Game/SkylineRush/Environment/Materials/M_AeroHazard",
+    "/Game/SkylineRush/Environment/Materials/M_AeroPaving",
+    "/Game/SkylineRush/Environment/Materials/M_AeroSpeedScreen",
+    "/Game/SkylineRush/Environment/Materials/M_AtriumFloor",
+    "/Game/SkylineRush/Environment/Materials/M_AtriumPanel",
+    "/Game/SkylineRush/Environment/Materials/M_AtriumWall",
+    "/Game/SkylineRush/Environment/Materials/M_CityWalk",
+    "/Game/SkylineRush/Environment/Materials/M_CoastalPanorama",
+    "/Game/SkylineRush/Environment/Materials/M_EarthPath",
+    "/Game/SkylineRush/Environment/Materials/M_ForestGround",
+    "/Game/SkylineRush/Environment/Materials/M_GlowParticle",
+    "/Game/SkylineRush/Environment/Materials/M_Leaves",
+    "/Game/SkylineRush/Environment/Materials/M_MossStone",
+    "/Game/SkylineRush/Environment/Materials/M_VioletLight",
+    "/Game/SkylineRush/Environment/Materials/M_VoidFloor",
+    "/Game/SkylineRush/Environment/Materials/M_VoidSky",
+    "/Game/SkylineRush/Environment/Materials/M_VoidStone",
+    "/Game/SkylineRush/Environment/Materials/M_WarmLight",
+    "/Game/SkylineRush/Environment/Meshes/SM_AeroBarrier",
+    "/Game/SkylineRush/Environment/Meshes/SM_AeroCrystal",
+    "/Game/SkylineRush/Environment/Meshes/SM_CoastalIsland",
+    "/Game/SkylineRush/Environment/Meshes/SM_CoastalTower",
+    "/Game/SkylineRush/Environment/Meshes/SM_Fern",
+    "/Game/SkylineRush/Environment/Meshes/SM_Illustration_StreetTree",
+    "/Game/SkylineRush/Environment/Meshes/SM_Illustration_StreetTreeB",
+    "/Game/SkylineRush/Environment/Meshes/SM_PalmCrown",
+    "/Game/SkylineRush/Environment/Meshes/SM_PalmTrunk",
+    "/Game/SkylineRush/Maps/L_SkylineRush",
+    "/Game/SkylineRush/UI/T_Dialogue_StudentHero_Portrait_v1"
+  ],
+  "keep": [
+    "/Game/SkylineRush/Audio/SFX_Hit_Confirm",
+    "/Game/SkylineRush/Audio/SFX_Player_Damage",
+    "/Game/SkylineRush/Characters/Animations/STUDENT_MF_Unarmed_Jog_Fwd_Stable",
+    "/Game/SkylineRush/Characters/Animations/STUDENT_MM_Death_Front_01",
+    "/Game/SkylineRush/Characters/Animations/STUDENT_MM_Idle",
+    "/Game/SkylineRush/Characters/Animations/STUDENT_MM_Jump",
+    "/Game/SkylineRush/Characters/Animations/STUDENT_MM_Land",
+    "/Game/SkylineRush/Characters/Materials/M_STUDENT_Bag",
+    "/Game/SkylineRush/Characters/Materials/M_STUDENT_BlouseWhite",
+    "/Game/SkylineRush/Characters/Materials/M_STUDENT_BodySkin_v3",
+    "/Game/SkylineRush/Characters/Materials/M_STUDENT_Brow_v4",
+    "/Game/SkylineRush/Characters/Materials/M_STUDENT_EyeHighlight_v4",
+    "/Game/SkylineRush/Characters/Materials/M_STUDENT_EyeWhite_v4",
+    "/Game/SkylineRush/Characters/Materials/M_STUDENT_Eyelash_v4",
+    "/Game/SkylineRush/Characters/Materials/M_STUDENT_Eyeline_v4",
+    "/Game/SkylineRush/Characters/Materials/M_STUDENT_HairClipCyan",
+    "/Game/SkylineRush/Characters/Materials/M_STUDENT_Iris_v4",
+    "/Game/SkylineRush/Characters/Materials/M_STUDENT_Loafers",
+    "/Game/SkylineRush/Characters/Materials/M_STUDENT_Loafers_v3",
+    "/Game/SkylineRush/Characters/Materials/M_STUDENT_Mouth_v4",
+    "/Game/SkylineRush/Characters/Materials/M_STUDENT_SkirtNavy",
+    "/Game/SkylineRush/Characters/Materials/M_Student_PleatedNavy",
+    "/Game/SkylineRush/Characters/Materials/M_Student_PortraitSkin",
+    "/Game/SkylineRush/Characters/Materials/M_Student_SilverHair_1",
+    "/Game/SkylineRush/Characters/Materials/M_Student_SilverHair_13",
+    "/Game/SkylineRush/Characters/Materials/M_Student_TailoredBlouse",
+    "/Game/SkylineRush/Characters/Materials/N00_000_00_Body_00_SKIN__Instance_",
+    "/Game/SkylineRush/Characters/Materials/N00_000_00_EyeHighlight_00_EYE__Instance_",
+    "/Game/SkylineRush/Characters/Materials/N00_000_00_EyeIris_00_EYE__Instance_",
+    "/Game/SkylineRush/Characters/Materials/N00_000_00_EyeWhite_00_EYE__Instance_",
+    "/Game/SkylineRush/Characters/Materials/N00_000_00_FaceBrow_00_FACE__Instance_",
+    "/Game/SkylineRush/Characters/Materials/N00_000_00_FaceEyelash_00_FACE__Instance_",
+    "/Game/SkylineRush/Characters/Materials/N00_000_00_FaceEyeline_00_FACE__Instance_",
+    "/Game/SkylineRush/Characters/Materials/N00_000_00_FaceMouth_00_FACE__Instance_",
+    "/Game/SkylineRush/Characters/Materials/N00_000_00_Face_00_SKIN__Instance_",
+    "/Game/SkylineRush/Characters/Materials/N00_000_00_HairBack_00_HAIR__Instance_",
+    "/Game/SkylineRush/Characters/Materials/N00_000_Hair_00_HAIR__Instance_",
+    "/Game/SkylineRush/Characters/Meshes/SK_HOO_StudentHero_v2",
+    "/Game/SkylineRush/Characters/Meshes/SK_StudentHero_IllustrationV2",
+    "/Game/SkylineRush/Characters/Rig/DA_StudentHero_LOD",
+    "/Game/SkylineRush/Characters/Rig/SK_HOO_StudentHero_v2_Skeleton",
+    "/Game/SkylineRush/Characters/Textures/T_STUDENT_Body_Base",
+    "/Game/SkylineRush/Characters/Textures/T_STUDENT_Body_Normal",
+    "/Game/SkylineRush/Characters/Textures/T_STUDENT_Brow",
+    "/Game/SkylineRush/Characters/Textures/T_STUDENT_EyeHighlight",
+    "/Game/SkylineRush/Characters/Textures/T_STUDENT_EyeWhite",
+    "/Game/SkylineRush/Characters/Textures/T_STUDENT_Eyelash",
+    "/Game/SkylineRush/Characters/Textures/T_STUDENT_Eyeline",
+    "/Game/SkylineRush/Characters/Textures/T_STUDENT_Face_Base",
+    "/Game/SkylineRush/Characters/Textures/T_STUDENT_HairBack_Base",
+    "/Game/SkylineRush/Characters/Textures/T_STUDENT_HairBack_Normal",
+    "/Game/SkylineRush/Characters/Textures/T_STUDENT_HairFront_Base",
+    "/Game/SkylineRush/Characters/Textures/T_STUDENT_HairFront_Normal",
+    "/Game/SkylineRush/Characters/Textures/T_STUDENT_Iris",
+    "/Game/SkylineRush/Characters/Textures/T_STUDENT_Loafers_Base",
+    "/Game/SkylineRush/Characters/Textures/T_STUDENT_Mouth",
+    "/Game/SkylineRush/Environment/Materials/MI_Coral",
+    "/Game/SkylineRush/Environment/Materials/MI_Cyan",
+    "/Game/SkylineRush/Environment/Materials/MI_Gold",
+    "/Game/SkylineRush/Environment/Materials/MI_Ink",
+    "/Game/SkylineRush/Environment/Materials/MI_Ivory",
+    "/Game/SkylineRush/Environment/Materials/M_AeroCliff",
+    "/Game/SkylineRush/Environment/Materials/M_AeroGlass",
+    "/Game/SkylineRush/Environment/Materials/M_AeroHazard",
+    "/Game/SkylineRush/Environment/Materials/M_AeroOcean",
+    "/Game/SkylineRush/Environment/Materials/M_AeroPaving",
+    "/Game/SkylineRush/Environment/Materials/M_AeroSpeedScreen",
+    "/Game/SkylineRush/Environment/Materials/M_AeroSurface",
+    "/Game/SkylineRush/Environment/Materials/M_AtriumFloor",
+    "/Game/SkylineRush/Environment/Materials/M_AtriumPanel",
+    "/Game/SkylineRush/Environment/Materials/M_AtriumWall",
+    "/Game/SkylineRush/Environment/Materials/M_Bark",
+    "/Game/SkylineRush/Environment/Materials/M_CityWalk",
+    "/Game/SkylineRush/Environment/Materials/M_CoastalPanorama",
+    "/Game/SkylineRush/Environment/Materials/M_EarthPath",
+    "/Game/SkylineRush/Environment/Materials/M_ForestGround",
+    "/Game/SkylineRush/Environment/Materials/M_GlowParticle",
+    "/Game/SkylineRush/Environment/Materials/M_Illustration_Foliage",
+    "/Game/SkylineRush/Environment/Materials/M_Leaves",
+    "/Game/SkylineRush/Environment/Materials/M_MossStone",
+    "/Game/SkylineRush/Environment/Materials/M_PalmLeaves",
+    "/Game/SkylineRush/Environment/Materials/M_VioletLight",
+    "/Game/SkylineRush/Environment/Materials/M_VoidFloor",
+    "/Game/SkylineRush/Environment/Materials/M_VoidSky",
+    "/Game/SkylineRush/Environment/Materials/M_VoidStone",
+    "/Game/SkylineRush/Environment/Materials/M_WarmLight",
+    "/Game/SkylineRush/Environment/Meshes/SM_AeroBarrier",
+    "/Game/SkylineRush/Environment/Meshes/SM_AeroCrystal",
+    "/Game/SkylineRush/Environment/Meshes/SM_CoastalIsland",
+    "/Game/SkylineRush/Environment/Meshes/SM_CoastalTower",
+    "/Game/SkylineRush/Environment/Meshes/SM_Fern",
+    "/Game/SkylineRush/Environment/Meshes/SM_Illustration_StreetTree",
+    "/Game/SkylineRush/Environment/Meshes/SM_Illustration_StreetTreeB",
+    "/Game/SkylineRush/Environment/Meshes/SM_PalmCrown",
+    "/Game/SkylineRush/Environment/Meshes/SM_PalmTrunk",
+    "/Game/SkylineRush/Environment/Textures/T_City_Sidewalk_Albedo_v1",
+    "/Game/SkylineRush/Environment/Textures/T_City_Sidewalk_Normal_v1",
+    "/Game/SkylineRush/Environment/Textures/T_City_Sidewalk_Roughness_v1",
+    "/Game/SkylineRush/Environment/Textures/T_CoastalPanorama_v6",
+    "/Game/SkylineRush/Environment/Textures/T_Illustration_BaseColor",
+    "/Game/SkylineRush/Environment/Textures/T_Illustration_ORM",
+    "/Game/SkylineRush/Maps/L_SkylineRush",
+    "/Game/SkylineRush/UI/T_Dialogue_StudentHero_Portrait_v1"
+  ],
+  "unused": [],
+  "missing": [],
+  "external": [
+    "/Engine/Animation/DefaultAnimBoneCompressionSettings",
+    "/Engine/Animation/DefaultAnimCurveCompressionSettings",
+    "/Engine/Animation/DefaultVariableFrameStrippingSettings",
+    "/Engine/BasicShapes/Plane",
+    "/Engine/EditorResources/LightIcons/S_LightError",
+    "/Engine/EngineMaterials/WorldGridMaterial",
+    "/Engine/EngineSky/VolumetricClouds/m_SimpleVolumetricCloud_Inst",
+    "/InterchangeAssets/Materials/FBXLegacyPhongSurfaceMaterial",
+    "/Script/AnimationData",
+    "/Script/AnimationModifiers",
+    "/Script/ControlRig",
+    "/Script/Engine",
+    "/Script/InterchangeEngine",
+    "/Script/MovieScene",
+    "/Script/NavigationSystem",
+    "/Script/SkylineRush"
+  ],
+  "dependencies": {
+    "/Game/SkylineRush/Environment/Meshes/SM_PalmTrunk": [
+      "/Script/NavigationSystem",
+      "/Script/InterchangeEngine",
+      "/Game/SkylineRush/Environment/Materials/M_Bark"
+    ],
+    "/Game/SkylineRush/Environment/Materials/M_Bark": [],
+    "/Game/SkylineRush/Environment/Materials/M_AeroPaving": [
+      "/Game/SkylineRush/Environment/Textures/T_City_Sidewalk_Albedo_v1",
+      "/Game/SkylineRush/Environment/Textures/T_City_Sidewalk_Normal_v1",
+      "/Game/SkylineRush/Environment/Textures/T_City_Sidewalk_Roughness_v1"
+    ],
+    "/Game/SkylineRush/Environment/Textures/T_City_Sidewalk_Roughness_v1": [
+      "/Script/InterchangeEngine"
+    ],
+    "/Game/SkylineRush/Environment/Textures/T_City_Sidewalk_Normal_v1": [
+      "/Script/InterchangeEngine"
+    ],
+    "/Game/SkylineRush/Environment/Textures/T_City_Sidewalk_Albedo_v1": [
+      "/Script/InterchangeEngine"
+    ],
+    "/Game/SkylineRush/Environment/Materials/M_CityWalk": [],
+    "/Game/SkylineRush/Environment/Meshes/SM_AeroBarrier": [
+      "/Script/NavigationSystem",
+      "/Script/InterchangeEngine",
+      "/Game/SkylineRush/Environment/Materials/M_AeroHazard"
+    ],
+    "/Game/SkylineRush/Environment/Materials/M_AeroHazard": [],
+    "/Game/SkylineRush/Environment/Materials/MI_Ivory": [
+      "/Game/SkylineRush/Environment/Materials/M_AeroSurface"
+    ],
+    "/Game/SkylineRush/Environment/Materials/M_AeroSurface": [],
+    "/Game/SkylineRush/Environment/Meshes/SM_Fern": [
+      "/Script/NavigationSystem",
+      "/Script/InterchangeEngine",
+      "/Game/SkylineRush/Environment/Materials/M_PalmLeaves"
+    ],
+    "/Game/SkylineRush/Environment/Materials/M_PalmLeaves": [],
+    "/Game/SkylineRush/Environment/Materials/M_AtriumPanel": [],
+    "/Game/SkylineRush/Environment/Materials/MI_Gold": [
+      "/Game/SkylineRush/Environment/Materials/M_AeroSurface"
+    ],
+    "/Game/SkylineRush/Environment/Materials/M_AtriumFloor": [],
+    "/Game/SkylineRush/Environment/Meshes/SM_PalmCrown": [
+      "/Script/NavigationSystem",
+      "/Script/InterchangeEngine",
+      "/Game/SkylineRush/Environment/Materials/M_PalmLeaves"
+    ],
+    "/Game/SkylineRush/Environment/Meshes/SM_AeroCrystal": [
+      "/Script/NavigationSystem",
+      "/Script/InterchangeEngine",
+      "/Game/SkylineRush/Environment/Materials/MI_Gold"
+    ],
+    "/Game/SkylineRush/Characters/Animations/STUDENT_MF_Unarmed_Jog_Fwd_Stable": [
+      "/Script/MovieScene",
+      "/Script/AnimationModifiers",
+      "/Script/ControlRig",
+      "/Script/AnimationData",
+      "/Engine/Animation/DefaultVariableFrameStrippingSettings",
+      "/Game/SkylineRush/Characters/Rig/SK_HOO_StudentHero_v2_Skeleton",
+      "/Game/SkylineRush/Characters/Meshes/SK_HOO_StudentHero_v2",
+      "/Engine/Animation/DefaultAnimBoneCompressionSettings",
+      "/Engine/Animation/DefaultAnimCurveCompressionSettings"
+    ],
+    "/Game/SkylineRush/Characters/Meshes/SK_HOO_StudentHero_v2": [
+      "/Script/InterchangeEngine",
+      "/Game/SkylineRush/Characters/Materials/M_STUDENT_Bag",
+      "/Game/SkylineRush/Characters/Materials/M_STUDENT_HairClipCyan",
+      "/Game/SkylineRush/Characters/Rig/SK_HOO_StudentHero_v2_Skeleton",
+      "/Game/SkylineRush/Characters/Materials/M_STUDENT_BlouseWhite",
+      "/Game/SkylineRush/Characters/Materials/M_STUDENT_Loafers",
+      "/Game/SkylineRush/Characters/Materials/M_STUDENT_SkirtNavy",
+      "/Game/SkylineRush/Characters/Materials/N00_000_00_Body_00_SKIN__Instance_",
+      "/Game/SkylineRush/Characters/Materials/N00_000_00_EyeHighlight_00_EYE__Instance_",
+      "/Game/SkylineRush/Characters/Materials/N00_000_00_EyeIris_00_EYE__Instance_",
+      "/Game/SkylineRush/Characters/Materials/N00_000_00_EyeWhite_00_EYE__Instance_",
+      "/Game/SkylineRush/Characters/Materials/N00_000_00_FaceBrow_00_FACE__Instance_",
+      "/Game/SkylineRush/Characters/Materials/N00_000_00_FaceEyelash_00_FACE__Instance_",
+      "/Game/SkylineRush/Characters/Materials/N00_000_00_FaceEyeline_00_FACE__Instance_",
+      "/Game/SkylineRush/Characters/Materials/N00_000_00_FaceMouth_00_FACE__Instance_",
+      "/Game/SkylineRush/Characters/Materials/N00_000_00_Face_00_SKIN__Instance_",
+      "/Game/SkylineRush/Characters/Materials/N00_000_00_HairBack_00_HAIR__Instance_",
+      "/Game/SkylineRush/Characters/Materials/N00_000_Hair_00_HAIR__Instance_"
+    ],
+    "/Game/SkylineRush/Characters/Materials/N00_000_Hair_00_HAIR__Instance_": [
+      "/Script/InterchangeEngine",
+      "/InterchangeAssets/Materials/FBXLegacyPhongSurfaceMaterial"
+    ],
+    "/Game/SkylineRush/Characters/Materials/N00_000_00_HairBack_00_HAIR__Instance_": [
+      "/Script/InterchangeEngine",
+      "/InterchangeAssets/Materials/FBXLegacyPhongSurfaceMaterial"
+    ],
+    "/Game/SkylineRush/Characters/Materials/N00_000_00_Face_00_SKIN__Instance_": [
+      "/Script/InterchangeEngine",
+      "/InterchangeAssets/Materials/FBXLegacyPhongSurfaceMaterial"
+    ],
+    "/Game/SkylineRush/Characters/Materials/N00_000_00_FaceMouth_00_FACE__Instance_": [
+      "/Script/InterchangeEngine",
+      "/InterchangeAssets/Materials/FBXLegacyPhongSurfaceMaterial"
+    ],
+    "/Game/SkylineRush/Characters/Materials/N00_000_00_FaceEyeline_00_FACE__Instance_": [
+      "/Script/InterchangeEngine",
+      "/InterchangeAssets/Materials/FBXLegacyPhongSurfaceMaterial"
+    ],
+    "/Game/SkylineRush/Characters/Materials/N00_000_00_FaceEyelash_00_FACE__Instance_": [
+      "/Script/InterchangeEngine",
+      "/InterchangeAssets/Materials/FBXLegacyPhongSurfaceMaterial"
+    ],
+    "/Game/SkylineRush/Characters/Materials/N00_000_00_FaceBrow_00_FACE__Instance_": [
+      "/Script/InterchangeEngine",
+      "/InterchangeAssets/Materials/FBXLegacyPhongSurfaceMaterial"
+    ],
+    "/Game/SkylineRush/Characters/Materials/N00_000_00_EyeWhite_00_EYE__Instance_": [
+      "/Script/InterchangeEngine",
+      "/InterchangeAssets/Materials/FBXLegacyPhongSurfaceMaterial"
+    ],
+    "/Game/SkylineRush/Characters/Materials/N00_000_00_EyeIris_00_EYE__Instance_": [
+      "/Script/InterchangeEngine",
+      "/InterchangeAssets/Materials/FBXLegacyPhongSurfaceMaterial"
+    ],
+    "/Game/SkylineRush/Characters/Materials/N00_000_00_EyeHighlight_00_EYE__Instance_": [
+      "/Script/InterchangeEngine",
+      "/InterchangeAssets/Materials/FBXLegacyPhongSurfaceMaterial"
+    ],
+    "/Game/SkylineRush/Characters/Materials/N00_000_00_Body_00_SKIN__Instance_": [
+      "/Script/InterchangeEngine",
+      "/InterchangeAssets/Materials/FBXLegacyPhongSurfaceMaterial"
+    ],
+    "/Game/SkylineRush/Characters/Materials/M_STUDENT_SkirtNavy": [
+      "/Script/InterchangeEngine",
+      "/InterchangeAssets/Materials/FBXLegacyPhongSurfaceMaterial"
+    ],
+    "/Game/SkylineRush/Characters/Materials/M_STUDENT_Loafers": [
+      "/Script/InterchangeEngine",
+      "/InterchangeAssets/Materials/FBXLegacyPhongSurfaceMaterial"
+    ],
+    "/Game/SkylineRush/Characters/Materials/M_STUDENT_BlouseWhite": [
+      "/Script/InterchangeEngine",
+      "/InterchangeAssets/Materials/FBXLegacyPhongSurfaceMaterial"
+    ],
+    "/Game/SkylineRush/Characters/Rig/SK_HOO_StudentHero_v2_Skeleton": [
+      "/Game/SkylineRush/Characters/Meshes/SK_HOO_StudentHero_v2"
+    ],
+    "/Game/SkylineRush/Characters/Materials/M_STUDENT_HairClipCyan": [
+      "/Script/InterchangeEngine",
+      "/InterchangeAssets/Materials/FBXLegacyPhongSurfaceMaterial"
+    ],
+    "/Game/SkylineRush/Characters/Materials/M_STUDENT_Bag": [
+      "/Script/InterchangeEngine",
+      "/InterchangeAssets/Materials/FBXLegacyPhongSurfaceMaterial"
+    ],
+    "/Game/SkylineRush/Environment/Materials/M_AeroCliff": [],
+    "/Game/SkylineRush/Environment/Materials/M_VoidFloor": [],
+    "/Game/SkylineRush/Environment/Meshes/SM_Illustration_StreetTree": [
+      "/Script/NavigationSystem",
+      "/Game/SkylineRush/Environment/Materials/M_Illustration_Foliage"
+    ],
+    "/Game/SkylineRush/Environment/Materials/M_Illustration_Foliage": [
+      "/Game/SkylineRush/Environment/Textures/T_Illustration_BaseColor",
+      "/Game/SkylineRush/Environment/Textures/T_Illustration_ORM"
+    ],
+    "/Game/SkylineRush/Environment/Textures/T_Illustration_ORM": [
+      "/Script/InterchangeEngine"
+    ],
+    "/Game/SkylineRush/Environment/Textures/T_Illustration_BaseColor": [
+      "/Script/InterchangeEngine"
+    ],
+    "/Game/SkylineRush/Environment/Meshes/SM_Illustration_StreetTreeB": [
+      "/Script/NavigationSystem",
+      "/Game/SkylineRush/Environment/Materials/M_Illustration_Foliage"
+    ],
+    "/Game/SkylineRush/Environment/Materials/MI_Cyan": [
+      "/Game/SkylineRush/Environment/Materials/M_AeroSurface"
+    ],
+    "/Game/SkylineRush/Environment/Materials/M_VioletLight": [],
+    "/Game/SkylineRush/Environment/Materials/M_MossStone": [],
+    "/Game/SkylineRush/Environment/Materials/M_ForestGround": [],
+    "/Game/SkylineRush/Environment/Materials/M_GlowParticle": [],
+    "/Game/SkylineRush/Characters/Meshes/SK_StudentHero_IllustrationV2": [
+      "/Game/SkylineRush/Characters/Materials/M_STUDENT_Bag",
+      "/Game/SkylineRush/Characters/Materials/M_STUDENT_BodySkin_v3",
+      "/Game/SkylineRush/Characters/Materials/M_STUDENT_Brow_v4",
+      "/Game/SkylineRush/Characters/Materials/M_STUDENT_EyeHighlight_v4",
+      "/Game/SkylineRush/Characters/Materials/M_STUDENT_Eyelash_v4",
+      "/Game/SkylineRush/Characters/Materials/M_STUDENT_Eyeline_v4",
+      "/Game/SkylineRush/Characters/Materials/M_STUDENT_EyeWhite_v4",
+      "/Game/SkylineRush/Characters/Materials/M_STUDENT_HairClipCyan",
+      "/Game/SkylineRush/Characters/Materials/M_STUDENT_Iris_v4",
+      "/Game/SkylineRush/Characters/Materials/M_STUDENT_Loafers_v3",
+      "/Game/SkylineRush/Characters/Materials/M_STUDENT_Mouth_v4",
+      "/Game/SkylineRush/Characters/Materials/M_Student_PleatedNavy",
+      "/Game/SkylineRush/Characters/Materials/M_Student_PortraitSkin",
+      "/Game/SkylineRush/Characters/Materials/M_Student_SilverHair_1",
+      "/Game/SkylineRush/Characters/Materials/M_Student_SilverHair_13",
+      "/Game/SkylineRush/Characters/Materials/M_Student_TailoredBlouse",
+      "/Game/SkylineRush/Characters/Rig/DA_StudentHero_LOD",
+      "/Game/SkylineRush/Characters/Rig/SK_HOO_StudentHero_v2_Skeleton"
+    ],
+    "/Game/SkylineRush/Characters/Rig/DA_StudentHero_LOD": [],
+    "/Game/SkylineRush/Characters/Materials/M_Student_TailoredBlouse": [],
+    "/Game/SkylineRush/Characters/Materials/M_Student_SilverHair_13": [
+      "/Game/SkylineRush/Characters/Textures/T_STUDENT_HairFront_Base",
+      "/Game/SkylineRush/Characters/Textures/T_STUDENT_HairFront_Normal"
+    ],
+    "/Game/SkylineRush/Characters/Textures/T_STUDENT_HairFront_Normal": [
+      "/Script/InterchangeEngine"
+    ],
+    "/Game/SkylineRush/Characters/Textures/T_STUDENT_HairFront_Base": [
+      "/Script/InterchangeEngine"
+    ],
+    "/Game/SkylineRush/Characters/Materials/M_Student_SilverHair_1": [
+      "/Game/SkylineRush/Characters/Textures/T_STUDENT_HairBack_Base",
+      "/Game/SkylineRush/Characters/Textures/T_STUDENT_HairBack_Normal"
+    ],
+    "/Game/SkylineRush/Characters/Textures/T_STUDENT_HairBack_Normal": [
+      "/Script/InterchangeEngine"
+    ],
+    "/Game/SkylineRush/Characters/Textures/T_STUDENT_HairBack_Base": [
+      "/Script/InterchangeEngine"
+    ],
+    "/Game/SkylineRush/Characters/Materials/M_Student_PortraitSkin": [
+      "/Game/SkylineRush/Characters/Textures/T_STUDENT_Face_Base"
+    ],
+    "/Game/SkylineRush/Characters/Textures/T_STUDENT_Face_Base": [
+      "/Script/InterchangeEngine"
+    ],
+    "/Game/SkylineRush/Characters/Materials/M_Student_PleatedNavy": [],
+    "/Game/SkylineRush/Characters/Materials/M_STUDENT_Mouth_v4": [
+      "/Game/SkylineRush/Characters/Textures/T_STUDENT_Mouth"
+    ],
+    "/Game/SkylineRush/Characters/Textures/T_STUDENT_Mouth": [
+      "/Script/InterchangeEngine"
+    ],
+    "/Game/SkylineRush/Characters/Materials/M_STUDENT_Loafers_v3": [
+      "/Game/SkylineRush/Characters/Textures/T_STUDENT_Loafers_Base"
+    ],
+    "/Game/SkylineRush/Characters/Textures/T_STUDENT_Loafers_Base": [
+      "/Script/InterchangeEngine"
+    ],
+    "/Game/SkylineRush/Characters/Materials/M_STUDENT_Iris_v4": [
+      "/Game/SkylineRush/Characters/Textures/T_STUDENT_Iris"
+    ],
+    "/Game/SkylineRush/Characters/Textures/T_STUDENT_Iris": [
+      "/Script/InterchangeEngine"
+    ],
+    "/Game/SkylineRush/Characters/Materials/M_STUDENT_EyeWhite_v4": [
+      "/Game/SkylineRush/Characters/Textures/T_STUDENT_EyeWhite"
+    ],
+    "/Game/SkylineRush/Characters/Textures/T_STUDENT_EyeWhite": [
+      "/Script/InterchangeEngine"
+    ],
+    "/Game/SkylineRush/Characters/Materials/M_STUDENT_Eyeline_v4": [
+      "/Game/SkylineRush/Characters/Textures/T_STUDENT_Eyeline"
+    ],
+    "/Game/SkylineRush/Characters/Textures/T_STUDENT_Eyeline": [
+      "/Script/InterchangeEngine"
+    ],
+    "/Game/SkylineRush/Characters/Materials/M_STUDENT_Eyelash_v4": [
+      "/Game/SkylineRush/Characters/Textures/T_STUDENT_Eyelash"
+    ],
+    "/Game/SkylineRush/Characters/Textures/T_STUDENT_Eyelash": [
+      "/Script/InterchangeEngine"
+    ],
+    "/Game/SkylineRush/Characters/Materials/M_STUDENT_EyeHighlight_v4": [
+      "/Game/SkylineRush/Characters/Textures/T_STUDENT_EyeHighlight"
+    ],
+    "/Game/SkylineRush/Characters/Textures/T_STUDENT_EyeHighlight": [
+      "/Script/InterchangeEngine"
+    ],
+    "/Game/SkylineRush/Characters/Materials/M_STUDENT_Brow_v4": [
+      "/Game/SkylineRush/Characters/Textures/T_STUDENT_Brow"
+    ],
+    "/Game/SkylineRush/Characters/Textures/T_STUDENT_Brow": [
+      "/Script/InterchangeEngine"
+    ],
+    "/Game/SkylineRush/Characters/Materials/M_STUDENT_BodySkin_v3": [
+      "/Game/SkylineRush/Characters/Textures/T_STUDENT_Body_Base",
+      "/Game/SkylineRush/Characters/Textures/T_STUDENT_Body_Normal"
+    ],
+    "/Game/SkylineRush/Characters/Textures/T_STUDENT_Body_Normal": [
+      "/Script/InterchangeEngine"
+    ],
+    "/Game/SkylineRush/Characters/Textures/T_STUDENT_Body_Base": [
+      "/Script/InterchangeEngine"
+    ],
+    "/Game/SkylineRush/Environment/Materials/M_AeroSpeedScreen": [],
+    "/Game/SkylineRush/Audio/SFX_Player_Damage": [],
+    "/Game/SkylineRush/Environment/Materials/M_EarthPath": [],
+    "/Game/SkylineRush/Environment/Meshes/SM_CoastalTower": [
+      "/Script/NavigationSystem",
+      "/Script/InterchangeEngine",
+      "/Game/SkylineRush/Environment/Materials/M_AeroGlass"
+    ],
+    "/Game/SkylineRush/Environment/Materials/M_AeroGlass": [],
+    "/Game/SkylineRush/Environment/Materials/M_AtriumWall": [],
+    "/Game/SkylineRush/Environment/Materials/M_VoidSky": [],
+    "/Game/SkylineRush/Environment/Materials/MI_Ink": [
+      "/Game/SkylineRush/Environment/Materials/M_AeroSurface"
+    ],
+    "/Game/SkylineRush/Environment/Materials/M_CoastalPanorama": [
+      "/Game/SkylineRush/Environment/Textures/T_CoastalPanorama_v6"
+    ],
+    "/Game/SkylineRush/Environment/Textures/T_CoastalPanorama_v6": [
+      "/Script/InterchangeEngine"
+    ],
+    "/Game/SkylineRush/Characters/Animations/STUDENT_MM_Death_Front_01": [
+      "/Script/Engine",
+      "/Script/MovieScene",
+      "/Script/AnimationModifiers",
+      "/Script/ControlRig",
+      "/Script/AnimationData",
+      "/Engine/Animation/DefaultVariableFrameStrippingSettings",
+      "/Game/SkylineRush/Characters/Rig/SK_HOO_StudentHero_v2_Skeleton",
+      "/Game/SkylineRush/Characters/Meshes/SK_HOO_StudentHero_v2",
+      "/Engine/Animation/DefaultAnimBoneCompressionSettings",
+      "/Engine/Animation/DefaultAnimCurveCompressionSettings"
+    ],
+    "/Game/SkylineRush/Characters/Animations/STUDENT_MM_Land": [
+      "/Script/MovieScene",
+      "/Script/AnimationModifiers",
+      "/Script/ControlRig",
+      "/Script/AnimationData",
+      "/Engine/Animation/DefaultVariableFrameStrippingSettings",
+      "/Game/SkylineRush/Characters/Rig/SK_HOO_StudentHero_v2_Skeleton",
+      "/Game/SkylineRush/Characters/Meshes/SK_HOO_StudentHero_v2",
+      "/Engine/Animation/DefaultAnimBoneCompressionSettings",
+      "/Engine/Animation/DefaultAnimCurveCompressionSettings"
+    ],
+    "/Game/SkylineRush/Environment/Materials/M_Leaves": [],
+    "/Game/SkylineRush/Environment/Materials/M_VoidStone": [],
+    "/Game/SkylineRush/UI/T_Dialogue_StudentHero_Portrait_v1": [
+      "/Script/InterchangeEngine"
+    ],
+    "/Game/SkylineRush/Environment/Materials/MI_Coral": [
+      "/Game/SkylineRush/Environment/Materials/M_AeroSurface"
+    ],
+    "/Game/SkylineRush/Characters/Animations/STUDENT_MM_Jump": [
+      "/Script/MovieScene",
+      "/Script/AnimationModifiers",
+      "/Script/ControlRig",
+      "/Script/AnimationData",
+      "/Engine/Animation/DefaultVariableFrameStrippingSettings",
+      "/Game/SkylineRush/Characters/Rig/SK_HOO_StudentHero_v2_Skeleton",
+      "/Game/SkylineRush/Characters/Meshes/SK_HOO_StudentHero_v2",
+      "/Engine/Animation/DefaultAnimBoneCompressionSettings",
+      "/Engine/Animation/DefaultAnimCurveCompressionSettings"
+    ],
+    "/Game/SkylineRush/Maps/L_SkylineRush": [
+      "/Script/NavigationSystem",
+      "/Engine/BasicShapes/Plane",
+      "/Script/SkylineRush",
+      "/Engine/EngineMaterials/WorldGridMaterial",
+      "/Engine/EngineSky/VolumetricClouds/m_SimpleVolumetricCloud_Inst",
+      "/Game/SkylineRush/Environment/Materials/M_AeroOcean",
+      "/Engine/EditorResources/LightIcons/S_LightError"
+    ],
+    "/Game/SkylineRush/Environment/Materials/M_AeroOcean": [],
+    "/Game/SkylineRush/Environment/Materials/M_WarmLight": [],
+    "/Game/SkylineRush/Environment/Meshes/SM_CoastalIsland": [
+      "/Script/NavigationSystem",
+      "/Script/InterchangeEngine",
+      "/Game/SkylineRush/Environment/Materials/M_AeroCliff"
+    ],
+    "/Game/SkylineRush/Audio/SFX_Hit_Confirm": [],
+    "/Game/SkylineRush/Characters/Animations/STUDENT_MM_Idle": [
+      "/Script/MovieScene",
+      "/Script/AnimationModifiers",
+      "/Script/ControlRig",
+      "/Script/AnimationData",
+      "/Engine/Animation/DefaultVariableFrameStrippingSettings",
+      "/Game/SkylineRush/Characters/Rig/SK_HOO_StudentHero_v2_Skeleton",
+      "/Game/SkylineRush/Characters/Meshes/SK_HOO_StudentHero_v2",
+      "/Engine/Animation/DefaultAnimBoneCompressionSettings",
+      "/Engine/Animation/DefaultAnimCurveCompressionSettings"
+    ]
+  }
+}

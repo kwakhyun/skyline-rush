@@ -1,0 +1,34 @@
+{
+  "source": "Project-owned StudentHero v3 blend; existing VRoid provenance applies. New geometry authored in this script.",
+  "bones": 144,
+  "facial_shape_keys": 57,
+  "tailored_pleats": 24,
+  "collar_panels": 2,
+  "hair_strands_refined": 332,
+  "meshes": [
+    {
+      "name": "SK_HOO_StudentHero_Body",
+      "vertices": 38123
+    },
+    {
+      "name": "SK_HOO_StudentHero_Face",
+      "vertices": 4305
+    },
+    {
+      "name": "SK_HOO_StudentHero_Hair",
+      "vertices": 23445
+    },
+    {
+      "name": "STUDENT_Backpack",
+      "vertices": 48
+    },
+    {
+      "name": "STUDENT_HairClip",
+      "vertices": 8
+    }
+  ],
+  "files": {
+    "SK_StudentHero_IllustrationV2.fbx": "89c8e810ef46880bc82f0115f908ba824684a0b4fa220dd08b4d96e7e15613e5",
+    "StudentIllustration_Source.blend": "1e76f1a34cd8412cdfb12afb1b0e4be8473382ad3149ca6fcb5bff51c1a12c44"
+  }
+}
