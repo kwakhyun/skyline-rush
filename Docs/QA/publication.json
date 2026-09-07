@@ -1,0 +1,33 @@
+{
+  "date": "2026-09-07",
+  "repository": "https://github.com/kwakhyun/skyline-rush",
+  "release_tag": "v0.6.0-preview.1",
+  "ranking_url": "https://skyline-rush-ranking.khyun97.chatgpt.site",
+  "ranking_deployment": "succeeded",
+  "editor_build": "passed",
+  "runner_tests_passed": 12,
+  "runner_tests_failed": 0,
+  "offline_replay_cases": 3,
+  "ranking_local_http_tests": "passed",
+  "shipping_package": "passed",
+  "shipping_visual_smoke": [
+    "main menu",
+    "start countdown",
+    "run to 936m / 6576 points",
+    "result screen",
+    "quit button"
+  ],
+  "zip_bytes": 377048764,
+  "zip_sha256": "fe3d08ff9562bf46ffd5893bb59b186ad1476bf5e8ddb1f71a19fb100e579c26",
+  "public_source_excludes": [
+    "raw Unreal assets",
+    "editable art and standalone models",
+    "local data and credentials",
+    "generated caches",
+    "legacy Git history"
+  ],
+  "limitations": [
+    "Preview build; extended play and diverse hardware testing remain",
+    "Scenery can obstruct the camera in some corner/collision views"
+  ]
+}

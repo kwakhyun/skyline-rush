@@ -4,6 +4,10 @@
 
 ## 실행
 
+[Windows 프리뷰 다운로드](https://github.com/kwakhyun/skyline-rush/releases/tag/v0.6.0-preview.1) · [온라인 랭킹](https://skyline-rush-ranking.khyun97.chatgpt.site)
+
+Windows 패키지는 ZIP 전체를 풀고 `SkylineRush.exe`를 실행합니다. Unreal Editor 설치는 필요하지 않습니다.
+
 **공개 저장소 안내:** 전체 게임·서버·도구 소스코드를 제공합니다. 재배포 제한이 있는 원본 모델과 Unreal 에셋은 포함하지 않으므로 저장소만 복제하면 동일한 게임을 실행할 수 없습니다. [공개 범위와 패키징 안내](Docs/PUBLISHING.md)를 확인하세요.
 
 Unreal Engine 5.8과 Visual Studio C++ 개발 도구가 필요합니다. 프로젝트 파일은 **SkylineRush.uproject**입니다.

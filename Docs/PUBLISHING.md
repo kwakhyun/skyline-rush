@@ -25,3 +25,13 @@
 ```
 
 배포 파일에는 cooked 게임 데이터와 실행 파일을 담고 편집 원본과 디버그 심볼은 포함하지 않습니다. Steam 등록·판매는 별도 작업입니다.
+
+## 2026-09-07 공개 결과
+
+- 공개 소스: https://github.com/kwakhyun/skyline-rush
+- Windows 프리뷰: https://github.com/kwakhyun/skyline-rush/releases/tag/v0.6.0-preview.1
+- 온라인 랭킹: https://skyline-rush-ranking.khyun97.chatgpt.site
+- Editor 빌드, 러너 테스트 12개, 리플레이 3개 대조, 로컬 랭킹 API 테스트, Shipping 패키징을 통과했습니다.
+- Shipping 실행 파일로 시작·달리기·결과 화면을 확인했습니다. 936m, 6,576점까지 진행하고 게임 종료 버튼을 확인했습니다. 긴 플레이와 다양한 PC의 성능·호환성 검증은 포함하지 않습니다.
+- 일부 코너·충돌 장면에서 배경이 카메라를 가리는 모습이 관찰되었습니다. 프리뷰의 시각적 개선 사항으로 남아 있습니다.
+- Docs/QA/validation.json의 `shipping_package_tested`와 `deployed`는 이전 정리 작업 당시의 기록입니다. 이번 공개 결과는 Docs/QA/publication.json을 참고하세요.
