@@ -4,7 +4,7 @@
 
 ## 실행
 
-[Windows 프리뷰 다운로드](https://github.com/kwakhyun/skyline-rush/releases/tag/v0.7.0-preview.1) · [온라인 랭킹](https://skyline-rush-ranking.khyun97.chatgpt.site)
+[Windows 프리뷰 다운로드](https://github.com/kwakhyun/skyline-rush/releases/tag/v0.7.0-preview.2) · [온라인 랭킹](https://skyline-rush-ranking.khyun97.chatgpt.site)
 
 Windows 패키지는 ZIP 전체를 풀고 `SkylineRush.exe`를 실행합니다. Unreal Editor 설치는 필요하지 않습니다.
 
@@ -39,3 +39,9 @@ Breezy Adventure 두 곡이 차례로 반복됩니다. 일시정지하면 음악
 [게임 규칙](Docs/GAMEPLAY.md) · [코드 구조](Docs/ARCHITECTURE.md) · [개발·검증](Docs/DEVELOPMENT.md) · [에셋 출처](Docs/ASSET_PROVENANCE.md) · [정리 내역·복원](Docs/CLEANUP.md)
 
 ![다섯 테마 실제 게임 화면](Docs/Media/five-worlds.png)
+
+## 전용 타이틀 화면
+
+은발 주인공과 하늘 도시의 전용 일러스트, 최고 기록과 시작·설정·기록 메뉴를 적용했습니다. [구현과 검증](Docs/TITLE_SCREEN.md)
+
+![타이틀 화면](Docs/Media/Title/16x9.png)

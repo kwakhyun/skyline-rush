@@ -22,3 +22,5 @@ Rules 7 특별 구간은 `Special`/`SpecialPhase`와 `FHOORunnerTile::Risk`로 �
 에셋은 Characters/{Animations,Materials,Meshes,Rig,Textures}, Environment/{Materials,Meshes,Textures}, Audio, UI, Maps로 나눴습니다. ConstructorHelpers, 명시적 LoadObject, 동적으로 구성하는 애니메이션 경로와 맵을 시작점으로 AssetRegistry의 하드·소프트 의존성을 추적했습니다.
 
 원본에 v1/v2가 붙어 있어도 현재 머티리얼·스켈레톤이 참조하는 파일은 유지합니다. 파일명만 보고 지우지 말고 Tools/Unreal/audit_assets.py와 재빌드·실행으로 확인합니다.
+
+타이틀 전용 일러스트는 Ready 상태의 Canvas 배경이며, 메뉴는 기존 UMG 위젯을 재사용합니다. 화면 비율 대응·이미지 가져오기·검증은 [TITLE_SCREEN.md](TITLE_SCREEN.md)를 참고하세요.

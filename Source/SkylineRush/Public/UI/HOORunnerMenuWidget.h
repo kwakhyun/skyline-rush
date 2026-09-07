@@ -22,7 +22,7 @@ private:
  UPROPERTY() TObjectPtr<UTextBlock> Detail;
  UPROPERTY() TObjectPtr<UTextBlock> PrimaryLabel;
  UPROPERTY() TObjectPtr<UTextBlock> HomeLabel;
- UPROPERTY() TObjectPtr<UBorder> PortraitPanel;
+ UPROPERTY() TObjectPtr<UBorder> MainPanel;
  UPROPERTY() TArray<TObjectPtr<UButton>> Actions;
  TWeakObjectPtr<AHOORunnerHUD> HUD;
  int32 Phase=-1,Focus=0;

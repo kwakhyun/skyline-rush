@@ -4,6 +4,8 @@
 #include "UI/HOORunnerStatusWidget.h"
 #include "UI/HOORunnerMenuWidget.h"
 #include "Components/TextBlock.h"
+#include "Components/Button.h"
+#include "Engine/Texture2D.h"
 #include "Components/Border.h"
 #include "Camera/CameraComponent.h"
 #include "Components/SkeletalMeshComponent.h"
@@ -110,6 +112,40 @@ void AHOORunnerVisualQA::Tick(float Dt)
  const double Now=FPlatformTime::Seconds(),Wall=(Now-PreviousTime)*1000;PreviousTime=Now;++StageFrames;
  if(Now-StartTime>(bVideo?600.:240.)){UE_LOG(LogTemp,Error,TEXT("VISUAL_QA_TIMEOUT"));UGameplayStatics::GetPlayerController(this,0)->ConsoleCommand(TEXT("quit"),false);return;}
  auto& R=Runner->Run;auto* PC=UGameplayStatics::GetPlayerController(this,0);
+ if(FParse::Param(FCommandLine::Get(),TEXT("RunnerTitleQA")))
+ {
+  if(Now-StartTime<6)return;
+  auto* H=Cast<AHOORunnerHUD>(PC->GetHUD());
+  if(!H || !H->MenuWidget)return;
+  auto* M=H->MenuWidget.Get();
+  if(Stage==0)
+  {
+   CheckReview(TEXT("title_texture_resident"),H->TitleIllustration && H->TitleIllustration->GetResource());
+   CheckReview(TEXT("dedicated_title_ready"),R.Phase==EHOORunnerPhase::Ready && M->Ready && M->Title->GetText().ToString()==TEXT("SKYLINE\nRUSH"));
+   CheckReview(TEXT("title_actions_available"),M->Actions.Num()==5 && M->Score->GetVisibility()==ESlateVisibility::Collapsed);
+   Shot(TEXT("title"));Next(1);
+  }
+  else if(Stage==1 && StageFrames>30){M->Actions[2]->OnClicked.Broadcast();Next(2);}
+  else if(Stage==2 && StageFrames>30){CheckReview(TEXT("title_settings"),H->IsSettingsOpen() && R.Phase==EHOORunnerPhase::Ready);Shot(TEXT("title-settings"));Next(3);}
+  else if(Stage==3 && StageFrames>30){H->Back();M->Actions[1]->OnClicked.Broadcast();Next(4);}
+  else if(Stage==4 && StageFrames>30){CheckReview(TEXT("title_records"),H->IsRecordsOpen() && R.Phase==EHOORunnerPhase::Ready);Shot(TEXT("title-records"));Next(5);}
+  else if(Stage==5 && StageFrames>30){H->Back();Runner->bVisualQAFrozen=false;M->Actions[0]->OnClicked.Broadcast();Runner->Countdown=0;Next(6);}
+  else if(Stage==6 && StageFrames>90){CheckReview(TEXT("start_button_runs"),R.Phase==EHOORunnerPhase::Running && R.Distance>0);Shot(TEXT("title-to-game"));Runner->bVisualQAFrozen=true;Next(7);}
+  else if(Stage==7 && StageFrames>30){R.TogglePause();Next(8);}
+  else if(Stage==8 && StageFrames>30){CheckReview(TEXT("pause_restores_game_menu"),R.Phase==EHOORunnerPhase::Paused && !M->Ready && M->Score->GetVisibility()!=ESlateVisibility::Collapsed);Shot(TEXT("title-pause"));Next(9);}
+  else if(Stage==9 && StageFrames>30){M->Actions[3]->OnClicked.Broadcast();Next(10);}
+  else if(Stage==10 && StageFrames>30){CheckReview(TEXT("home_restores_title"),R.Phase==EHOORunnerPhase::Ready && M->Ready && M->Title->GetText().ToString()==TEXT("SKYLINE\nRUSH"));Shot(TEXT("title-return"));Next(11);}
+  else if(Stage==11 && StageFrames>30)
+  {
+   auto J=MakeShared<FJsonObject>();J->SetArrayField(TEXT("checks"),ReviewChecks);
+   J->SetNumberField(TEXT("width"),GEngine->GameViewport->Viewport->GetSizeXY().X);
+   J->SetNumberField(TEXT("height"),GEngine->GameViewport->Viewport->GetSizeXY().Y);
+   FString Json;auto W=TJsonWriterFactory<>::Create(&Json);FJsonSerializer::Serialize(J,W);
+   FFileHelper::SaveStringToFile(Json,*(Out/TEXT("title-checks.json")),FFileHelper::EEncodingOptions::ForceUTF8WithoutBOM);
+   PC->ConsoleCommand(TEXT("quit"),false);
+  }
+  return;
+ }
  if(FParse::Param(FCommandLine::Get(),TEXT("RunnerQASpecials")))
  {
   if(Now-StartTime<8) return;

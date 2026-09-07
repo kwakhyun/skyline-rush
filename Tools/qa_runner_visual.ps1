@@ -1,5 +1,5 @@
 param(
- [ValidateSet('Profile','Fast','Capture','Video','Debug','Review')][string]$Mode='Profile',
+ [ValidateSet('Profile','Fast','Capture','Video','Debug','Review','Title')][string]$Mode='Profile',
  [string]$Tag=('QA_'+(Get-Date -Format 'yyyyMMdd_HHmmss')),
  [int]$Width=1920,[int]$Height=1080,
  [string]$Engine='C:\Program Files\Epic Games\UE_5.8',
@@ -16,6 +16,7 @@ $log=Join-Path $projectRoot ('Saved\Logs\Visual_'+$Tag+'.log')
 $argsText='"'+$projectFile+'" /Game/SkylineRush/Maps/L_SkylineRush -game -ForceRes -nosplash -NoSound -RunnerQA -RunnerVisualQA -ResX='+$Width+' -ResY='+$Height+' -RunnerQAOutput='+$Tag+' -abslog="'+$log+'"'
 if($Windowed){$argsText+=' -windowed'}else{$argsText+=' -fullscreen'}
 switch($Mode){
+ 'Title'{$argsText+=' -RunnerTitleQA'}
  'Fast'{$argsText+=' -RunnerQAFast'}
  'Review'{$argsText+=' -RunnerReviewQA'}
  'Capture'{$argsText+=' -RunnerQACaptureOnly'}
@@ -26,3 +27,10 @@ $windowStyle=if($ShowGame){'Normal'}else{'Hidden'}
 $process=Start-Process -FilePath $exe -ArgumentList $argsText -WindowStyle $windowStyle -PassThru
 Write-Output ('Unreal process '+$process.Id+'; output '+$out)
 if($Wait){$process.WaitForExit();Write-Output ('Exited '+$process.ExitCode);if(Test-Path -LiteralPath (Join-Path $out 'metrics.json')){Get-Content -LiteralPath (Join-Path $out 'metrics.json')}}
+
+if($Wait -and $Mode -eq 'Title'){
+ if($process.ExitCode -ne 0){throw 'Title QA process failed'}
+ $titleReport=Get-Content -LiteralPath (Join-Path $out 'title-checks.json') -Raw | ConvertFrom-Json
+ if(@($titleReport.checks).Count -ne 8 -or @($titleReport.checks | Where-Object { !$_.passed }).Count -gt 0){throw 'Title screen checks failed'}
+ Write-Output 'Title screen: all 8 checks passed.'
+}

@@ -1,0 +1,130 @@
+{
+  "mode": "Standalone Unreal DX12 Development, high quality",
+  "interaction": "UMG action delegates, phase transitions and rendered screenshots",
+  "resolutions": [
+    {
+      "checks": [
+        {
+          "check": "title_texture_resident",
+          "passed": true
+        },
+        {
+          "check": "dedicated_title_ready",
+          "passed": true
+        },
+        {
+          "check": "title_actions_available",
+          "passed": true
+        },
+        {
+          "check": "title_settings",
+          "passed": true
+        },
+        {
+          "check": "title_records",
+          "passed": true
+        },
+        {
+          "check": "start_button_runs",
+          "passed": true
+        },
+        {
+          "check": "pause_restores_game_menu",
+          "passed": true
+        },
+        {
+          "check": "home_restores_title",
+          "passed": true
+        }
+      ],
+      "width": 1280,
+      "height": 720,
+      "evidence_directory": "Saved/QA/Title_Final720"
+    },
+    {
+      "checks": [
+        {
+          "check": "title_texture_resident",
+          "passed": true
+        },
+        {
+          "check": "dedicated_title_ready",
+          "passed": true
+        },
+        {
+          "check": "title_actions_available",
+          "passed": true
+        },
+        {
+          "check": "title_settings",
+          "passed": true
+        },
+        {
+          "check": "title_records",
+          "passed": true
+        },
+        {
+          "check": "start_button_runs",
+          "passed": true
+        },
+        {
+          "check": "pause_restores_game_menu",
+          "passed": true
+        },
+        {
+          "check": "home_restores_title",
+          "passed": true
+        }
+      ],
+      "width": 1280,
+      "height": 960,
+      "evidence_directory": "Saved/QA/Title_4x3"
+    },
+    {
+      "checks": [
+        {
+          "check": "title_texture_resident",
+          "passed": true
+        },
+        {
+          "check": "dedicated_title_ready",
+          "passed": true
+        },
+        {
+          "check": "title_actions_available",
+          "passed": true
+        },
+        {
+          "check": "title_settings",
+          "passed": true
+        },
+        {
+          "check": "title_records",
+          "passed": true
+        },
+        {
+          "check": "start_button_runs",
+          "passed": true
+        },
+        {
+          "check": "pause_restores_game_menu",
+          "passed": true
+        },
+        {
+          "check": "home_restores_title",
+          "passed": true
+        }
+      ],
+      "width": 1720,
+      "height": 720,
+      "evidence_directory": "Saved/QA/Title_WideFinal"
+    }
+  ],
+  "shipping": {
+    "build": "passed",
+    "cooked_title_asset": "present",
+    "process_launch": "running without immediate exit",
+    "visual_capture": "not completed: Computer Use app approval timed out",
+    "output": "Saved/QA/Release-Title/Windows/SkylineRush.exe"
+  }
+}

@@ -117,6 +117,7 @@ void AHOORunnerController::MenuStick(float Value)
 }
 AHOORunnerHUD::AHOORunnerHUD()
 {
+    TitleIllustration=LoadObject<UTexture2D>(nullptr,TEXT("/Game/SkylineRush/UI/Title/T_SkylineRush_Title_v1"));
     TextFont=CreateDefaultSubobject<UFont>(TEXT("RunnerKoreanFont"));
     TextFont->FontCacheType=EFontCacheType::Runtime;
     const FString FontPath=FPaths::EngineContentDir()/TEXT("Slate/Fonts/DroidSansFallback.ttf");
@@ -248,6 +249,20 @@ void AHOORunnerHUD::DrawHUD()
     const FLinearColor Ink=HOOAero::Text,Muted=HOOAero::Muted,White=HOOAero::Panel,
         Blue=HOOAero::Cyan,Mint=HOOAero::Gold,Pink=HOOAero::Coral,Gold=HOOAero::Coral,Pale=HOOAero::Surface;
     const bool Menu=IsMenuOpen();
+    if(R.Phase==EHOORunnerPhase::Ready && TitleIllustration && TitleIllustration->GetResource())
+    {
+        const FVector2D View(Canvas->SizeX,Canvas->SizeY);
+        const FVector2D Image(TitleIllustration->GetSizeX(),TitleIllustration->GetSizeY());
+        // Keep the full illustration height on wide displays. Extend its calm
+        // left edge beneath the menu instead of cropping the heroine's head.
+        FCanvasTileItem Backdrop(FVector2D::ZeroVector,TitleIllustration->GetResource(),View,
+            FVector2D(.5/Image.X,0),FVector2D(.5/Image.X,1),FLinearColor::White);
+        Backdrop.BlendMode=SE_BLEND_Opaque;Canvas->DrawItem(Backdrop);
+        const FVector2D ArtSize(Image.X*View.Y/Image.Y,View.Y);
+        const double OffsetX=View.X>=ArtSize.X?View.X-ArtSize.X:(View.X-ArtSize.X)*.5;
+        FCanvasTileItem Background(FVector2D(OffsetX,0),TitleIllustration->GetResource(),ArtSize,FLinearColor::White);
+        Background.BlendMode=SE_BLEND_Opaque;Canvas->DrawItem(Background);
+    }
     if(!StatusWidget && PlayerOwner) {StatusWidget=CreateWidget<UHOORunnerStatusWidget>(PlayerOwner);if(StatusWidget) StatusWidget->AddToViewport(1);}
     if(StatusWidget) StatusWidget->SetVisibility(Menu?ESlateVisibility::Collapsed:ESlateVisibility::HitTestInvisible);
     if(PlayerOwner) PlayerOwner->bShowMouseCursor=Menu;
@@ -304,7 +319,7 @@ void AHOORunnerHUD::DrawHUD()
         Buttons.Add({Bounds,Action,Enabled});
     };
 
-    if(Menu)
+    if(Menu && R.Phase!=EHOORunnerPhase::Ready)
     {
     Card(24,24,294,96,White);Diamond(53,66,13,Mint);
     Text(FString::Printf(TEXT("%s"),*FText::AsNumber(R.Score()).ToString()),78,38,34,Ink);

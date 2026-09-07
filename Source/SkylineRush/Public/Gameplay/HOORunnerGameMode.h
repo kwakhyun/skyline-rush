@@ -113,6 +113,7 @@ private:
     void EditNickname();
     void CloseNickname();
     UPROPERTY() TObjectPtr<class UTexture2D> HeroPortrait;
+    UPROPERTY() TObjectPtr<class UTexture2D> TitleIllustration;
     bool bResumeAfterSettings=false;
     bool bLastMenuInput=false;
 };
