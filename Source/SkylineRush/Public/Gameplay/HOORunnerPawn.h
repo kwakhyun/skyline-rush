@@ -13,6 +13,7 @@ class USkeletalMeshComponent;
 class UInstancedStaticMeshComponent;
 class UAnimSequence;
 class USoundBase;
+class UAudioComponent;
 class UStaticMesh;
 class UMaterialInterface;
 
@@ -81,6 +82,14 @@ private:
     UPROPERTY() TObjectPtr<UAnimSequence> FallAnimation;
     UPROPERTY() TObjectPtr<USoundBase> PickupSound;
     UPROPERTY() TObjectPtr<USoundBase> CrashSound;
+    UPROPERTY() TObjectPtr<UAudioComponent> MusicAudio;
+    UPROPERTY() TArray<TObjectPtr<USoundBase>> MusicTracks;
+    int32 MusicTrackIndex = -1;
+    float MusicVolume = -1.f;
+    bool bMusicPaused = false;
+    bool bMusicStopping = false;
+    UFUNCTION() void PlayNextMusicTrack();
+    void UpdateMusicSettings();
     UPROPERTY() TObjectPtr<UAnimSequence> ActiveAnimation;
     FHOORunnerState Run;
     TArray<int64> Slots;

@@ -1,0 +1,16 @@
+{
+  "status": "passed",
+  "method": "Real audio completion; seek to last two seconds of each full track",
+  "tracks": [
+    1,
+    2,
+    1,
+    2,
+    1,
+    2,
+    1,
+    2
+  ],
+  "initial_volume": 0,
+  "shipping_package": "passed"
+}

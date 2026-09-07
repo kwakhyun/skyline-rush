@@ -1,0 +1,18 @@
+[
+  {
+    "asset": "/Game/SkylineRush/Audio/Music/BGM_BreezyAdventure_01",
+    "duration_seconds": 179.8800048828125,
+    "channels": 2,
+    "source_sha256": "030a252f659cd71d1df14eeb400490b63ad66538756e90763542fca89d09eb57",
+    "looping": false,
+    "virtualization": "PlayWhenSilent"
+  },
+  {
+    "asset": "/Game/SkylineRush/Audio/Music/BGM_BreezyAdventure_02",
+    "duration_seconds": 178.72000122070312,
+    "channels": 2,
+    "source_sha256": "1ef109fb54b79255a7fb8053dad9f85c95c2f8c77421ba082817219123196f8f",
+    "looping": false,
+    "virtualization": "PlayWhenSilent"
+  }
+]

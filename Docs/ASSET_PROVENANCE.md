@@ -11,6 +11,7 @@ Updated 2026-09-07. This document covers retained assets only.
 - Coastal panorama: original AI-generated image, not a downloaded photograph. Exact prompt and provenance are in SourceArt/Environment/Coastal/PROVENANCE.json. Coastal, course and foliage meshes are original procedural geometry.
 - Portrait: original image generation; provenance retained next to SourceArt/UI/Dialogue/T_Dialogue_StudentHero_Portrait_v1.png.
 - Pickup and damage sounds: project-authored procedural WAV files in SourceArt/Audio, reused from the earlier game.
+- Background music: two user-supplied Breezy Adventure WAVs, following the Suno generation discussion. Original bytes, filenames and hashes are recorded in SourceArt/Audio/Music/PROVENANCE.md. The game alternates the two tracks; the public source export excludes the raw recordings.
 - New material graphs and UI are project-authored. No copied commercial game characters, UI artwork, levels or paid assets were introduced by cleanup.
 
 Asset leaf names containing HOO, v1 or v2 can remain where they identify a live authored asset or skeleton. Unreal package dependency closure is authoritative.

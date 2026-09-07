@@ -28,3 +28,4 @@ npm run build
 
 패키징은 SkylineRush 게임 타깃과 L_SkylineRush 맵을 사용합니다. 에디터 Standalone 검증과 Shipping 패키징 검증은 별개입니다.
 
+음악 원본은 SourceArt/Audio/Music의 WAV 두 개입니다. UnrealEditor-Cmd의 `-run=pythonscript -script=<Tools/Unreal/import_runner_music.py 절대 경로>`로 임포트합니다. 각 SoundWave의 자체 루프는 꺼 두어야 종료 콜백에서 다음 곡으로 넘어갑니다. 무음 상태에서도 재생 순서가 유지되도록 PlayWhenSilent를 사용합니다. `Tools/test_runner_music.ps1`은 실제 오디오 재생 종료를 이용해 1→2→1 교대를 검사합니다. QA에서만 각 곡의 마지막 2초를 재생하며 Shipping에서는 이 옵션을 무시합니다.

@@ -6,6 +6,7 @@
 #include "Camera/CameraComponent.h"
 #include "Components/PointLightComponent.h"
 #include "Components/SceneComponent.h"
+#include "Components/AudioComponent.h"
 #include "Components/SkeletalMeshComponent.h"
 #include "Components/InstancedStaticMeshComponent.h"
 #include "Animation/AnimSequence.h"
@@ -71,6 +72,14 @@ AHOORunnerPawn::AHOORunnerPawn()
     FallAnimation=Animation(TEXT("STUDENT_MM_Death_Front_01"));
     PickupSound=LoadObject<USoundBase>(nullptr,TEXT("/Game/SkylineRush/Audio/SFX_Hit_Confirm"));
     CrashSound=LoadObject<USoundBase>(nullptr,TEXT("/Game/SkylineRush/Audio/SFX_Player_Damage"));
+    MusicAudio=CreateDefaultSubobject<UAudioComponent>(TEXT("RunnerMusic"));
+    MusicAudio->SetupAttachment(Root);
+    MusicAudio->bAutoActivate=false;
+    MusicAudio->bAutoDestroy=false;
+    MusicAudio->bAllowSpatialization=false;
+    MusicAudio->bIsUISound=true;
+    MusicTracks.Add(LoadObject<USoundBase>(nullptr,TEXT("/Game/SkylineRush/Audio/Music/BGM_BreezyAdventure_01")));
+    MusicTracks.Add(LoadObject<USoundBase>(nullptr,TEXT("/Game/SkylineRush/Audio/Music/BGM_BreezyAdventure_02")));
     UStaticMesh* Cube=Mesh(TEXT("/Engine/BasicShapes/Cube.Cube"));
     AddPool(TEXT("Deck"),Cube,LoadObject<UMaterialInterface>(nullptr,TEXT("/Game/SkylineRush/Environment/Materials/MI_Ink")),3);
     AddPool(TEXT("LaneInset"),Cube,LoadObject<UMaterialInterface>(nullptr,TEXT("/Game/SkylineRush/Environment/Materials/M_EarthPath")),3);
@@ -159,6 +168,9 @@ void AHOORunnerPawn::BeginPlay()
         auto* Probe=GetWorld()->SpawnActor<AHOORunnerVisualQA>();Probe->Initialize(this);AddTickPrerequisiteActor(Probe);
     }
 #endif
+    MusicAudio->OnAudioFinished.AddDynamic(this,&AHOORunnerPawn::PlayNextMusicTrack);
+    UpdateMusicSettings();
+    PlayNextMusicTrack();
     UE_LOG(LogTemp,Display,TEXT("RUNNER_READY mesh=%s pools=%d tiles=%d"),
         *GetNameSafe(RunnerMesh->GetSkeletalMeshAsset()),Pools.Num(),Slots.Num());
 }
@@ -194,6 +206,7 @@ void AHOORunnerPawn::SlideAction() { if(Countdown<=0) { RecordInput(TEXT("s"));R
 void AHOORunnerPawn::PauseRun()
 {
     Run.TogglePause();
+    UpdateMusicSettings();
     if(Run.Phase==EHOORunnerPhase::Running) Countdown=FMath::Max(Countdown,1.f);
 }
 
@@ -205,6 +218,7 @@ const TCHAR* AHOORunnerPawn::GetDistrict() const
 void AHOORunnerPawn::Tick(float Dt)
 {
     Super::Tick(Dt);
+    UpdateMusicSettings();
     const auto Previous=Run.Phase;
     const int32 PreviousCoins=Run.Coins;
     const int32 PreviousHits=Run.Hits;
@@ -476,6 +490,10 @@ FString AHOORunnerPawn::GetRunSnapshot() const
 
 void AHOORunnerPawn::EndPlay(const EEndPlayReason::Type Reason)
 {
+    // Stop also emits OnAudioFinished; unbind first so teardown cannot start another song.
+    bMusicStopping=true;
+    MusicAudio->OnAudioFinished.RemoveDynamic(this,&AHOORunnerPawn::PlayNextMusicTrack);
+    MusicAudio->Stop();
     SaveRecord();
     Super::EndPlay(Reason);
 }
