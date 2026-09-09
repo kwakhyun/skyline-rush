@@ -117,7 +117,8 @@ void AHOORunnerController::MenuStick(float Value)
 }
 AHOORunnerHUD::AHOORunnerHUD()
 {
-    TitleIllustration=LoadObject<UTexture2D>(nullptr,TEXT("/Game/SkylineRush/UI/Title/T_SkylineRush_Title_v1"));
+    MenuIllustration=LoadObject<UTexture2D>(nullptr,TEXT("/Game/SkylineRush/UI/Title/T_SkylineRush_Illustration_v2"));
+    TitleIllustration=LoadObject<UTexture2D>(nullptr,TEXT("/Game/SkylineRush/UI/Title/T_SkylineRush_Title_v2"));
     TextFont=CreateDefaultSubobject<UFont>(TEXT("RunnerKoreanFont"));
     TextFont->FontCacheType=EFontCacheType::Runtime;
     const FString FontPath=FPaths::EngineContentDir()/TEXT("Slate/Fonts/DroidSansFallback.ttf");
@@ -249,18 +250,16 @@ void AHOORunnerHUD::DrawHUD()
     const FLinearColor Ink=HOOAero::Text,Muted=HOOAero::Muted,White=HOOAero::Panel,
         Blue=HOOAero::Cyan,Mint=HOOAero::Gold,Pink=HOOAero::Coral,Gold=HOOAero::Coral,Pale=HOOAero::Surface;
     const bool Menu=IsMenuOpen();
-    if(R.Phase==EHOORunnerPhase::Ready && TitleIllustration && TitleIllustration->GetResource())
+    UTexture2D* MenuArt=(bSettingsOpen || bRecordsOpen || bEditingNickname)?MenuIllustration.Get():TitleIllustration.Get();
+    if(R.Phase==EHOORunnerPhase::Ready && MenuArt && MenuArt->GetResource())
     {
         const FVector2D View(Canvas->SizeX,Canvas->SizeY);
-        const FVector2D Image(TitleIllustration->GetSizeX(),TitleIllustration->GetSizeY());
-        // Keep the full illustration height on wide displays. Extend its calm
-        // left edge beneath the menu instead of cropping the heroine's head.
-        FCanvasTileItem Backdrop(FVector2D::ZeroVector,TitleIllustration->GetResource(),View,
-            FVector2D(.5/Image.X,0),FVector2D(.5/Image.X,1),FLinearColor::White);
-        Backdrop.BlendMode=SE_BLEND_Opaque;Canvas->DrawItem(Backdrop);
-        const FVector2D ArtSize(Image.X*View.Y/Image.Y,View.Y);
-        const double OffsetX=View.X>=ArtSize.X?View.X-ArtSize.X:(View.X-ArtSize.X)*.5;
-        FCanvasTileItem Background(FVector2D(OffsetX,0),TitleIllustration->GetResource(),ArtSize,FLinearColor::White);
+        const FVector2D Image(MenuArt->GetSizeX(),MenuArt->GetSizeY());
+        DrawRect(FLinearColor(.012f,.028f,.055f),0,0,View.X,View.Y);
+        // Fit the whole approved title so its baked logo is never cropped.
+        const double ArtScale=FMath::Min(View.X/Image.X,View.Y/Image.Y);
+        const FVector2D ArtSize=Image*ArtScale;
+        FCanvasTileItem Background((View-ArtSize)*.5,MenuArt->GetResource(),ArtSize,FLinearColor::White);
         Background.BlendMode=SE_BLEND_Opaque;Canvas->DrawItem(Background);
     }
     if(!StatusWidget && PlayerOwner) {StatusWidget=CreateWidget<UHOORunnerStatusWidget>(PlayerOwner);if(StatusWidget) StatusWidget->AddToViewport(1);}

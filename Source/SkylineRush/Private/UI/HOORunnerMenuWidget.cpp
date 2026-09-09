@@ -3,6 +3,7 @@
 #include "Gameplay/HOORunnerGameMode.h"
 #include "UI/HOORunnerStyle.h"
 #include "Blueprint/WidgetTree.h"
+#include "Blueprint/WidgetLayoutLibrary.h"
 #include "Components/CanvasPanel.h"
 #include "Components/CanvasPanelSlot.h"
 #include "Styling/CoreStyle.h"
@@ -58,6 +59,17 @@ void UHOORunnerMenuWidget::StyleButtons()
 void UHOORunnerMenuWidget::Present(AHOORunnerPawn* Runner,AHOORunnerHUD* OwnerHUD)
 {
  HUD=OwnerHUD;const auto& R=Runner->GetRun();
+ // Update geometry even while the cached Ready state is unchanged (window resizing).
+ if(auto* PanelSlot=Cast<UCanvasPanelSlot>(MainPanel->Slot))
+ {
+  const bool IsTitle=R.Phase==EHOORunnerPhase::Ready;
+  const FVector2D View=UWidgetLayoutLibrary::GetViewportSize(this);
+  const float Scale=FMath::Max(.01f,UWidgetLayoutLibrary::GetViewportScale(this));
+  const double ArtLeft=FMath::Max(0.,(View.X-View.Y*(1672./941.))*.5)/Scale;
+  PanelSlot->SetAlignment(IsTitle?FVector2D(0,0):FVector2D(0,.5));
+  PanelSlot->SetPosition(IsTitle?FVector2D(72+ArtLeft,0):FVector2D(32,0));
+  PanelSlot->SetSize(IsTitle?FVector2D(560,500):FVector2D(510,714));
+ }
  const int32 NewPhase=static_cast<int32>(R.Phase);
  // Menus do not receive Present while running. Phase alone would reuse the previous
  // run's result, or the previous pause's score, when the same screen reopens.
@@ -70,11 +82,10 @@ void UHOORunnerMenuWidget::Present(AHOORunnerPawn* Runner,AHOORunnerHUD* OwnerHU
  FSlateBrush PanelBrush=HOOAero::Brush(HOOAero::Panel);
  if(Ready)PanelBrush.DrawAs=ESlateBrushDrawType::NoDrawType;
  MainPanel->SetBrush(PanelBrush);
- if(auto* PanelSlot=Cast<UCanvasPanelSlot>(MainPanel->Slot))
- {
-  PanelSlot->SetPosition(Ready?FVector2D(72,0):FVector2D(32,0));
-  PanelSlot->SetSize(Ready?FVector2D(560,800):FVector2D(510,714));
- }
+ // The approved title image already contains the wordmark.
+ Title->SetVisibility(Ready?ESlateVisibility::Collapsed:ESlateVisibility::HitTestInvisible);
+ Badge->SetVisibility(Ready?ESlateVisibility::Collapsed:ESlateVisibility::HitTestInvisible);
+ Description->SetVisibility(Ready?ESlateVisibility::Collapsed:ESlateVisibility::HitTestInvisible);
  Title->SetFont(Ready?FCoreStyle::GetDefaultFontStyle("Bold",80):FSlateFontInfo(UIFont,42));
  Score->SetVisibility(Ready?ESlateVisibility::Collapsed:ESlateVisibility::HitTestInvisible);
  Badge->SetText(Ready?LOCTEXT("TitleEdition","FIVE WORLDS  /  ENDLESS ADVENTURE"):Paused?LOCTEXT("PauseBadge","TAKE A BREATH  /  잠시 쉬어가기"):Runner->IsNewRecord()?LOCTEXT("BestBadge","PERSONAL BEST  /  새로운 최고기록"):LOCTEXT("ResultBadge","RUN COMPLETE  /  오늘의 기록"));

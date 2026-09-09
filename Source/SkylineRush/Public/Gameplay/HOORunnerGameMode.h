@@ -114,6 +114,7 @@ private:
     void CloseNickname();
     UPROPERTY() TObjectPtr<class UTexture2D> HeroPortrait;
     UPROPERTY() TObjectPtr<class UTexture2D> TitleIllustration;
+    UPROPERTY() TObjectPtr<class UTexture2D> MenuIllustration;
     bool bResumeAfterSettings=false;
     bool bLastMenuInput=false;
 };

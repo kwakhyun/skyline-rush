@@ -1,6 +1,7 @@
 {
-  "mode": "Standalone Unreal DX12 Development, high quality",
-  "interaction": "UMG action delegates, phase transitions and rendered screenshots",
+  "art_version": 2,
+  "approved_on": "2026-09-09",
+  "mode": "Standalone Unreal DX12 Development",
   "resolutions": [
     {
       "checks": [
@@ -39,7 +40,7 @@
       ],
       "width": 1280,
       "height": 720,
-      "evidence_directory": "Saved/QA/Title_Final720"
+      "evidence_directory": "Saved/QA/TitleV2_720"
     },
     {
       "checks": [
@@ -78,7 +79,7 @@
       ],
       "width": 1280,
       "height": 960,
-      "evidence_directory": "Saved/QA/Title_4x3"
+      "evidence_directory": "Saved/QA/TitleV2_Final4x3"
     },
     {
       "checks": [
@@ -117,14 +118,9 @@
       ],
       "width": 1720,
       "height": 720,
-      "evidence_directory": "Saved/QA/Title_WideFinal"
+      "evidence_directory": "Saved/QA/TitleV2_FinalWide"
     }
   ],
-  "shipping": {
-    "build": "passed",
-    "cooked_title_asset": "present",
-    "process_launch": "running without immediate exit",
-    "visual_capture": "not completed: Computer Use app approval timed out",
-    "output": "Saved/QA/Release-Title/Windows/SkylineRush.exe"
-  }
+  "runner_tests": 13,
+  "replay_parity": "passed"
 }

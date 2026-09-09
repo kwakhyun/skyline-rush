@@ -120,9 +120,9 @@ void AHOORunnerVisualQA::Tick(float Dt)
   auto* M=H->MenuWidget.Get();
   if(Stage==0)
   {
-   CheckReview(TEXT("title_texture_resident"),H->TitleIllustration && H->TitleIllustration->GetResource());
+   CheckReview(TEXT("title_texture_resident"),H->TitleIllustration && H->TitleIllustration->GetResource() && H->MenuIllustration && H->MenuIllustration->GetResource());
    CheckReview(TEXT("dedicated_title_ready"),R.Phase==EHOORunnerPhase::Ready && M->Ready && M->Title->GetText().ToString()==TEXT("SKYLINE\nRUSH"));
-   CheckReview(TEXT("title_actions_available"),M->Actions.Num()==5 && M->Score->GetVisibility()==ESlateVisibility::Collapsed);
+   CheckReview(TEXT("title_actions_available"),M->Actions.Num()==5 && M->Score->GetVisibility()==ESlateVisibility::Collapsed && M->Title->GetVisibility()==ESlateVisibility::Collapsed);
    Shot(TEXT("title"));Next(1);
   }
   else if(Stage==1 && StageFrames>30){M->Actions[2]->OnClicked.Broadcast();Next(2);}
