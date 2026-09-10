@@ -1,0 +1,11 @@
+{
+  "generator": "Built-in Imagegen",
+  "mode": "reference-based generation",
+  "reference": "SourceArt/UI/Title/T_SkylineRush_Title_v2.png",
+  "file": "T_SkylineRush_Icon_v1.png",
+  "width": 1254,
+  "height": 1254,
+  "sha256": "75eb0bf3288f07cc5d2402218e0f23b2c55e943299d7bcd6d50268a066ed7098",
+  "pixel_edits": "none",
+  "prompt": "Use case: stylized-concept. Asset type: original square desktop game icon for SKYLINE RUSH. Produce a single 1024x1024 square raster icon, full bleed with opaque background, no external rounded-corner mask, no mockup or multiple sizes. Input image is ONLY reference for heroine identity and the original game's visual palette, not a layout to copy. Preserve the silver-white long hair with straight bangs, vivid blue eyes and small rectangular cyan hair clip, white blouse and a small navy backpack strap. Design a NEW expressive close-up portrait from shoulders up: heroine's face large and centered, looking forward with a focused optimistic smile, silver hair swept slightly diagonally by the wind. Face and hair silhouette occupy about 75% of the canvas, face clear and uncluttered. Clean premium anime game illustration with crisp simplified large shapes, elegant polished shading, natural youthful face, no body emphasis. Deep navy-to-cobalt blue background with two broad diagonal cyan streaks suggesting fast movement, at most two extremely simplified distant sky-tower silhouettes. One small luminous faceted cyan crystal emblem at the lower-right corner, about 18% of canvas, not obscuring the face. Strong light silver hair against dark blue, bright cyan eyes and accent, carefully controlled glow, readable at 64 pixels, important content within inner 85% so common icon crops are safe. No text, no letters, no title, no numbers, no watermark, no extra characters, no gold frame, no photorealism, no busy scenery. Original coherent game identity."
+}

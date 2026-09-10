@@ -18,7 +18,8 @@ foreach ($Relative in ($Candidates | Sort-Object -Unique)) {
     $Allowed = $Relative -match '^(Source|Config|Tools|Docs|Server/Ranking)/' -or
         $Relative -in @('.gitignore','.gitattributes','.vsconfig','AGENTS.md','README.md','SkylineRush.uproject') -or
         $Relative -match '^SourceArt/.*\.(md|json|py|ps1|mjs)$' -or
-        $Relative -match '^SourceArt/UI/Title/T_SkylineRush_(Title|Illustration)_v2\.png$'
+        $Relative -match '^SourceArt/UI/Title/T_SkylineRush_(Title|Illustration)_v2\.png$' -or
+        $Relative -match '^SourceArt/UI/Icon/T_SkylineRush_Icon_v1\.png$'
     if (!$Allowed) { continue }
     # Raw Unreal packages and editable models are not part of the public source distribution.
     if ($Relative -match '\.(uasset|umap|fbx|blend|vrm|vroid|glb|gltf|zip|exe|dll|pdb)$') { continue }
